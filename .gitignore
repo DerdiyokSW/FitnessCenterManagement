@@ -1,0 +1,62 @@
+# Build results
+bin/
+obj/
+.vs/
+
+# Visual Studio
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+NugetPackage/
+
+# npm
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+appsettings.Development.json
+
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+
+# Temp files
+*.tmp
+temp/
+tmp/
+
+# Published files
+publish/
+
+# Mobile app files
+.ionic/
+
+# Others
+.sass-cache/
+coverage/
+dist/
