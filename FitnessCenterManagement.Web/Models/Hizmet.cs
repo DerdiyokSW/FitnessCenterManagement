@@ -20,7 +20,7 @@ namespace FitnessCenterManagement.Web.Models
         /// </summary>
         [Required(ErrorMessage = "Hizmet adı zorunludur.")]
         [StringLength(100, ErrorMessage = "Hizmet adı 100 karakterden fazla olamaz.")]
-        public string Ad { get; set; }
+        public string? Ad { get; set; }
 
         /// <summary>
         /// Hizmetin süresi (dakika cinsinden)
@@ -41,7 +41,7 @@ namespace FitnessCenterManagement.Web.Models
         /// Hizmetin detaylı açıklaması
         /// </summary>
         [StringLength(500, ErrorMessage = "Açıklama 500 karakterden fazla olamaz.")]
-        public string Aciklama { get; set; }
+        public string? Aciklama { get; set; }
 
         // Foreign Key - Hangi spor salonuna ait
         /// <summary>
@@ -55,7 +55,7 @@ namespace FitnessCenterManagement.Web.Models
         /// <summary>
         /// Bu hizmetin ait olduğu spor salonu nesnesi
         /// </summary>
-        public SporSalonu SporSalonu { get; set; }
+        public SporSalonu? SporSalonu { get; set; }
 
         /// <summary>
         /// Bu hizmet için alınan randevular

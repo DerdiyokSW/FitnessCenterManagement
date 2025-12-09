@@ -78,16 +78,16 @@ namespace FitnessCenterManagement.Web.Models
         /// <summary>
         /// Bu randevuyu alan üye nesnesi
         /// </summary>
-        public Uye Uye { get; set; }
+        public Uye? Uye { get; set; }
 
         /// <summary>
         /// Bu randevuyu veren antrenör nesnesi
         /// </summary>
-        public Antrenor Antrenor { get; set; }
+        public Antrenor? Antrenor { get; set; }
 
         /// <summary>
         /// Bu randevudaki hizmet nesnesi
         /// </summary>
-        public Hizmet Hizmet { get; set; }
+        public Hizmet? Hizmet { get; set; }
     }
 }

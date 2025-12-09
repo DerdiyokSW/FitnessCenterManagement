@@ -215,7 +215,7 @@ namespace FitnessCenterManagement.Web.Controllers
                 }
 
                 // Model doğrulama
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid || hizmet == null)
                 {
                     ViewBag.Antrenorler = await _dbContext.Antrenorler.OrderBy(a => a.Ad).ToListAsync();
                     ViewBag.Hizmetler = await _dbContext.Hizmetler.OrderBy(h => h.Ad).ToListAsync();
@@ -277,6 +277,11 @@ namespace FitnessCenterManagement.Web.Controllers
 
                 // Yetki kontrolü
                 var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return Unauthorized();
+                }
+
                 var uye = await _dbContext.Uyeler.FirstOrDefaultAsync(u => u.KullaniciId == currentUser.Id);
 
                 bool isAdmin = User.IsInRole("Admin");
@@ -367,6 +372,7 @@ namespace FitnessCenterManagement.Web.Controllers
                     .Include(r => r.Hizmet)
                     .FirstOrDefaultAsync(r => r.Id == id);
 
+                // Randevu kontrolü
                 if (randevu == null)
                 {
                     return NotFound();
@@ -374,6 +380,11 @@ namespace FitnessCenterManagement.Web.Controllers
 
                 // Yetki kontrolü (kendi randevu veya Admin)
                 var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return Unauthorized();
+                }
+
                 var uye = await _dbContext.Uyeler.FirstOrDefaultAsync(u => u.KullaniciId == currentUser.Id);
 
                 if (!User.IsInRole("Admin") && (uye == null || uye.Id != randevu.UyeId))

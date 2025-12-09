@@ -20,21 +20,21 @@ namespace FitnessCenterManagement.Web.Models
         /// </summary>
         [Required(ErrorMessage = "Kullanıcı kimliği zorunludur.")]
         [StringLength(450)] // Identity default değer
-        public string KullaniciId { get; set; }
+        public string? KullaniciId { get; set; }
 
         /// <summary>
         /// Üyenin adı (zorunlu, max 50 karakter)
         /// </summary>
         [Required(ErrorMessage = "Adınız zorunludur.")]
         [StringLength(50, ErrorMessage = "Ad 50 karakterden fazla olamaz.")]
-        public string Ad { get; set; }
+        public string? Ad { get; set; }
 
         /// <summary>
         /// Üyenin soyadı (zorunlu, max 50 karakter)
         /// </summary>
         [Required(ErrorMessage = "Soyadınız zorunludur.")]
         [StringLength(50, ErrorMessage = "Soyadı 50 karakterden fazla olamaz.")]
-        public string Soyad { get; set; }
+        public string? Soyad { get; set; }
 
         /// <summary>
         /// Üyenin doğum tarihi (opsiyonel)
@@ -59,13 +59,13 @@ namespace FitnessCenterManagement.Web.Models
         /// Üyenin cinsiyeti (Erkek / Kadın / Diğer)
         /// </summary>
         [StringLength(10)]
-        public string Cinsiyet { get; set; }
+        public string? Cinsiyet { get; set; }
 
         /// <summary>
         /// Üyenin fitness hedefi (kilo verme, kas kazanma, sağlıklı yaşam vb.)
         /// </summary>
         [StringLength(200, ErrorMessage = "Hedef 200 karakterden fazla olamaz.")]
-        public string FitnessHedefi { get; set; }
+        public string? FitnessHedefi { get; set; }
 
         // Navigation Properties
         /// <summary>

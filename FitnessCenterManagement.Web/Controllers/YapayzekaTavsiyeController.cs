@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -183,6 +184,11 @@ namespace FitnessCenterManagement.Web.Controllers
                 try
                 {
                     // Yapay zeka servisini çağır
+                    if (model.Cinsiyet == null || model.FitnessHedefi == null)
+                    {
+                        return BadRequest("Cinsiyet ve Fitness hedefi gereklidir.");
+                    }
+
                     var cevap = await _yapayzekaSirvisi.EgzersizTavsiyesiAl(
                         model.Boy,
                         model.Agirlik,
@@ -327,6 +333,11 @@ namespace FitnessCenterManagement.Web.Controllers
                 try
                 {
                     // Yapay zeka servisini çağır
+                    if (model.Cinsiyet == null || model.FitnessHedefi == null)
+                    {
+                        return BadRequest("Cinsiyet ve Fitness hedefi gereklidir.");
+                    }
+
                     var cevap = await _yapayzekaSirvisi.DiyetTavsiyesiAl(
                         model.Boy,
                         model.Agirlik,
@@ -469,6 +480,11 @@ namespace FitnessCenterManagement.Web.Controllers
                 try
                 {
                     // Yapay zeka servisini çağır
+                    if (model.Cinsiyet == null)
+                    {
+                        return BadRequest("Cinsiyet gereklidir.");
+                    }
+
                     var cevap = await _yapayzekaSirvisi.VucutTipiAnaliziYap(
                         model.Boy,
                         model.Agirlik,
@@ -538,6 +554,10 @@ namespace FitnessCenterManagement.Web.Controllers
 
                 // Yetki kontrolü (kendi tavsiyeleri veya Admin)
                 var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return Unauthorized();
+                }
                 var uye = await _dbContext.Uyeler.FirstOrDefaultAsync(u => u.KullaniciId == currentUser.Id);
 
                 if (!User.IsInRole("Admin") && (uye == null || uye.Id != tavsiye.UyeId))
@@ -573,10 +593,10 @@ namespace FitnessCenterManagement.Web.Controllers
         public int Agirlik { get; set; }
 
         [Required(ErrorMessage = "Cinsiyet zorunludur.")]
-        public string Cinsiyet { get; set; }
+        public string? Cinsiyet { get; set; }
 
         [Required(ErrorMessage = "Fitness hedefi zorunludur.")]
-        public string FitnessHedefi { get; set; }
+        public string? FitnessHedefi { get; set; }
     }
 
     /// <summary>
@@ -593,10 +613,10 @@ namespace FitnessCenterManagement.Web.Controllers
         public int Agirlik { get; set; }
 
         [Required(ErrorMessage = "Cinsiyet zorunludur.")]
-        public string Cinsiyet { get; set; }
+        public string? Cinsiyet { get; set; }
 
         [Required(ErrorMessage = "Fitness hedefi zorunludur.")]
-        public string FitnessHedefi { get; set; }
+        public string? FitnessHedefi { get; set; }
     }
 
     /// <summary>
@@ -613,6 +633,6 @@ namespace FitnessCenterManagement.Web.Controllers
         public int Agirlik { get; set; }
 
         [Required(ErrorMessage = "Cinsiyet zorunludur.")]
-        public string Cinsiyet { get; set; }
+        public string? Cinsiyet { get; set; }
     }
 }

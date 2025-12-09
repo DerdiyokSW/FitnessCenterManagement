@@ -27,7 +27,7 @@ namespace FitnessCenterManagement.Web.Models
         /// </summary>
         [Required(ErrorMessage = "Tavsiye tipi zorunludur.")]
         [StringLength(50, ErrorMessage = "Tavsiye tipi 50 karakterden fazla olamaz.")]
-        public string TavsiyeTipi { get; set; }
+        public string? TavsiyeTipi { get; set; }
 
         // Girdi verisi
         /// <summary>
@@ -36,14 +36,14 @@ namespace FitnessCenterManagement.Web.Models
         /// Bu alan zorunludur
         /// </summary>
         [Required(ErrorMessage = "Giriş verileri zorunludur.")]
-        public string GirdiVeri { get; set; }
+        public string? GirdiVeri { get; set; }
 
         // Çıktı verisi
         /// <summary>
         /// Yapay zeka tarafından dönen tavsiye metni
         /// Örn: "Haftalık egzersiz planı, beslenme önerileri vb."
         /// </summary>
-        public string CiktiVeri { get; set; }
+        public string? CiktiVeri { get; set; }
 
         // Hata yönetimi
         /// <summary>
@@ -55,7 +55,7 @@ namespace FitnessCenterManagement.Web.Models
         /// İşlem sırasında oluşan hata mesajı (varsa)
         /// </summary>
         [StringLength(500)]
-        public string HataMesaji { get; set; }
+        public string? HataMesaji { get; set; }
 
         // Zaman bilgisi
         /// <summary>
@@ -72,6 +72,6 @@ namespace FitnessCenterManagement.Web.Models
         /// <summary>
         /// Tavsiye talep eden üye nesnesi
         /// </summary>
-        public Uye Uye { get; set; }
+        public Uye? Uye { get; set; }
     }
 }

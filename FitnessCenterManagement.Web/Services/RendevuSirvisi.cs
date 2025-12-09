@@ -203,7 +203,7 @@ namespace FitnessCenterManagement.Web.Services
                     .Where(r => r.UyeId == uyeId)
                     .Include(r => r.Antrenor)
                     .Include(r => r.Hizmet)
-                    .OrderBy(r => r.BaslamaTarihi);
+                    .AsQueryable();
 
                 // Tarih filtresi varsa uygula
                 if (startDate.HasValue)
@@ -215,6 +215,8 @@ namespace FitnessCenterManagement.Web.Services
                 {
                     query = query.Where(r => r.BitisTarihi <= endDate.Value);
                 }
+
+                query = query.OrderBy(r => r.BaslamaTarihi);
 
                 var randevular = await query.ToListAsync();
 
@@ -241,7 +243,7 @@ namespace FitnessCenterManagement.Web.Services
                     .Where(r => r.AntrenorId == antrenorId)
                     .Include(r => r.Uye)
                     .Include(r => r.Hizmet)
-                    .OrderBy(r => r.BaslamaTarihi);
+                    .AsQueryable();
 
                 // Tarih filtresi varsa uygula
                 if (startDate.HasValue)
@@ -253,6 +255,8 @@ namespace FitnessCenterManagement.Web.Services
                 {
                     query = query.Where(r => r.BitisTarihi <= endDate.Value);
                 }
+
+                query = query.OrderBy(r => r.BaslamaTarihi);
 
                 var randevular = await query.ToListAsync();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FitnessCenterManagement.Web.Data;
@@ -54,8 +55,8 @@ namespace FitnessCenterManagement.Web.Controllers.Api
         /// ]
         /// </summary>
         [HttpGet]
-        [ProduceResponseType(StatusCodes.Status200OK)]
-        [ProduceResponseType(StatusCodes.Status500InternalServerError)]
+        
+        
         public async Task<ActionResult<IEnumerable<AntrenorDto>>> GetAntrenorler()
         {
             try
@@ -71,7 +72,7 @@ namespace FitnessCenterManagement.Web.Controllers.Api
                         UzmanlıkAlanlari = a.UzmanlıkAlanlari,
                         Telefon = a.Telefon,
                         Email = a.Email,
-                        SporSalonuAdi = a.SporSalonu.Ad,
+                        SporSalonuAdi = a.SporSalonu != null ? a.SporSalonu.Ad : "Belirtilmedi",
                         MevcutBaslangicSaati = a.MevcutBaslangicSaati,
                         MevcutBitisSaati = a.MevcutBitisSaati
                     })
@@ -102,9 +103,9 @@ namespace FitnessCenterManagement.Web.Controllers.Api
         /// GET /api/antrenorler/1
         /// </summary>
         [HttpGet("{id}")]
-        [ProduceResponseType(StatusCodes.Status200OK)]
-        [ProduceResponseType(StatusCodes.Status404NotFound)]
-        [ProduceResponseType(StatusCodes.Status500InternalServerError)]
+        
+        
+        
         public async Task<ActionResult<AntrenorDto>> GetAntrenor(int id)
         {
             try
@@ -121,7 +122,7 @@ namespace FitnessCenterManagement.Web.Controllers.Api
                         UzmanlıkAlanlari = a.UzmanlıkAlanlari,
                         Telefon = a.Telefon,
                         Email = a.Email,
-                        SporSalonuAdi = a.SporSalonu.Ad,
+                        SporSalonuAdi = a.SporSalonu != null ? a.SporSalonu.Ad : "Belirtilmedi",
                         MevcutBaslangicSaati = a.MevcutBaslangicSaati,
                         MevcutBitisSaati = a.MevcutBitisSaati
                     })
@@ -163,9 +164,9 @@ namespace FitnessCenterManagement.Web.Controllers.Api
         /// - date (DateTime): Kontrol edilecek tarih (YYYY-MM-DD formatında)
         /// </summary>
         [HttpGet("available")]
-        [ProduceResponseType(StatusCodes.Status200OK)]
-        [ProduceResponseType(StatusCodes.Status400BadRequest)]
-        [ProduceResponseType(StatusCodes.Status500InternalServerError)]
+        
+        
+        
         public async Task<ActionResult<IEnumerable<AntrenorDto>>> GetMusaitAntrenorler([FromQuery] DateTime date)
         {
             try
@@ -201,7 +202,7 @@ namespace FitnessCenterManagement.Web.Controllers.Api
                         UzmanlıkAlanlari = a.UzmanlıkAlanlari,
                         Telefon = a.Telefon,
                         Email = a.Email,
-                        SporSalonuAdi = a.SporSalonu.Ad,
+                        SporSalonuAdi = a.SporSalonu != null ? a.SporSalonu.Ad : "Belirtilmedi",
                         MevcutBaslangicSaati = a.MevcutBaslangicSaati,
                         MevcutBitisSaati = a.MevcutBitisSaati
                     })
@@ -242,9 +243,9 @@ namespace FitnessCenterManagement.Web.Controllers.Api
         /// - uzmanlik (string): Aranacak uzmanlık alanı
         /// </summary>
         [HttpGet("search")]
-        [ProduceResponseType(StatusCodes.Status200OK)]
-        [ProduceResponseType(StatusCodes.Status400BadRequest)]
-        [ProduceResponseType(StatusCodes.Status500InternalServerError)]
+        
+        
+        
         public async Task<ActionResult<IEnumerable<AntrenorDto>>> SearchAntrenorler([FromQuery] string uzmanlik)
         {
             try
@@ -267,7 +268,7 @@ namespace FitnessCenterManagement.Web.Controllers.Api
                         UzmanlıkAlanlari = a.UzmanlıkAlanlari,
                         Telefon = a.Telefon,
                         Email = a.Email,
-                        SporSalonuAdi = a.SporSalonu.Ad,
+                        SporSalonuAdi = a.SporSalonu != null ? a.SporSalonu.Ad : "Belirtilmedi",
                         MevcutBaslangicSaati = a.MevcutBaslangicSaati,
                         MevcutBitisSaati = a.MevcutBitisSaati
                     })
@@ -310,32 +311,32 @@ namespace FitnessCenterManagement.Web.Controllers.Api
         /// <summary>
         /// Antrenörün adı
         /// </summary>
-        public string Ad { get; set; }
+        public string? Ad { get; set; }
 
         /// <summary>
         /// Antrenörün soyadı
         /// </summary>
-        public string Soyad { get; set; }
+        public string? Soyad { get; set; }
 
         /// <summary>
         /// Antrenörün uzmanlık alanları
         /// </summary>
-        public string UzmanlıkAlanlari { get; set; }
+        public string? UzmanlıkAlanlari { get; set; }
 
         /// <summary>
         /// Antrenörün telefonu
         /// </summary>
-        public string Telefon { get; set; }
+        public string? Telefon { get; set; }
 
         /// <summary>
         /// Antrenörün e-postaı
         /// </summary>
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// Antrenörün çalıştığı spor salonunun adı
         /// </summary>
-        public string SporSalonuAdi { get; set; }
+        public string? SporSalonuAdi { get; set; }
 
         /// <summary>
         /// Antrenörün başlangıç saati
