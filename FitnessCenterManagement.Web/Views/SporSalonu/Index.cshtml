@@ -1,0 +1,114 @@
+@model IEnumerable<SporSalonu>
+
+@{
+    ViewData["Title"] = "Spor Salonları";
+}
+
+<!-- ========================================
+     BAŞLIK BÖLÜMÜ
+     ======================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-building"></i> Spor Salonları
+    </h1>
+    
+    <!-- Admin: Yeni Salon Ekle Butonu -->
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/SporSalonu/Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Salon Ekle
+        </a>
+    }
+</div>
+
+<!-- ========================================
+     SPOR SALONLARI GRID GÖRÜNÜMÜ
+     ======================================== -->
+<div class="row g-4">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-info text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 2rem;"></i>
+                <p class="mt-3">Henüz spor salonu kayıtlı değil.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var salon in Model.OrderBy(s => s.Ad))
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <!-- Salon Başlığı -->
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-dumbbell"></i> @salon.Ad
+                        </h5>
+                    </div>
+
+                    <!-- Salon Bilgileri -->
+                    <div class="card-body">
+                        <!-- Adres -->
+                        <p class="mb-3">
+                            <strong><i class="fas fa-map-marker-alt text-danger"></i> Adres:</strong>
+                            <br>
+                            <small>@salon.Adres</small>
+                        </p>
+
+                        <!-- Çalışma Saatleri -->
+                        <p class="mb-3">
+                            <strong><i class="fas fa-clock text-warning"></i> Çalışma Saatleri:</strong>
+                            <br>
+                            <small>@salon.CalismaZamanlari</small>
+                        </p>
+
+                        <!-- Açıklama -->
+                        @if (!string.IsNullOrEmpty(salon.Aciklama))
+                        {
+                            <p class="mb-0">
+                                <strong><i class="fas fa-info-circle"></i> Açıklama:</strong>
+                                <br>
+                                <small>@(salon.Aciklama.Length > 80 ? salon.Aciklama.Substring(0, 80) + "..." : salon.Aciklama)</small>
+                            </p>
+                        }
+                    </div>
+
+                    <!-- İşlemler (Butonlar) -->
+                    <div class="card-footer bg-light">
+                        <!-- Detay Butonu -->
+                        <a href="/SporSalonu/Details/@salon.Id" class="btn btn-sm btn-info me-2" title="Detay">
+                            <i class="fas fa-eye"></i> Detay
+                        </a>
+
+                        <!-- Admin: Düzenle Butonu -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/SporSalonu/Edit/@salon.Id" class="btn btn-sm btn-warning me-2" title="Düzenle">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+
+                            <!-- Admin: Sil Butonu -->
+                            <a href="/SporSalonu/Delete/@salon.Id" class="btn btn-sm btn-danger" title="Sil">
+                                <i class="fas fa-trash"></i> Sil
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- ========================================
+     TOPLAM SALON SAYISI
+     ======================================== -->
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4 text-muted">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Toplam <strong>@Model.Count()</strong> spor salonu bulunmaktadır.
+        </small>
+    </div>
+}

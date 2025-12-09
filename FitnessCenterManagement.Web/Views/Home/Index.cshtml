@@ -1,8 +1,221 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- ========================================
+     BAŞLIK SEKSİYONU (Hero Section)
+     ======================================== -->
+<div class="bg-dark text-white py-5 text-center rounded-lg mb-5">
+    <h1 class="display-4 fw-bold mb-3">
+        <i class="fas fa-dumbbell"></i> Spor Salonu Yönetim Sistemi
+    </h1>
+    <p class="lead mb-4">
+        Sağlıklı yaşamı hedefleyen spor meraklıları için modern yönetim çözümü
+    </p>
+    <a href="/Antrenorler/Index" class="btn btn-primary btn-lg me-2">
+        <i class="fas fa-person"></i> Antrenörler
+    </a>
+    <a href="/SporSalonu/Index" class="btn btn-success btn-lg">
+        <i class="fas fa-building"></i> Salonları Keşfet
+    </a>
 </div>
+
+<!-- ========================================
+     ÖZELLİKLER BÖLÜMÜ (Features)
+     ======================================== -->
+<section class="mb-5">
+    <h2 class="text-center mb-4">
+        <i class="fas fa-star"></i> Neden Bizimi Seçin?
+    </h2>
+    <div class="row g-4">
+        <!-- Özellik 1: Kolay Randevu -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-check text-primary" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                    <h5 class="card-title">Kolay Randevu</h5>
+                    <p class="card-text">
+                        Antrenörlerinizle kolayca randevu alın, çakışma uyarıları alın.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Özellik 2: Yapay Zeka Tavsiyesi -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="fas fa-brain text-success" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                    <h5 class="card-title">AI Tavsiyesi</h5>
+                    <p class="card-text">
+                        Yapay zeka destekli egzersiz ve diyet planları alın.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Özellik 3: Uzman Antrenörler -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="fas fa-medal text-warning" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                    <h5 class="card-title">Uzman Antrenörler</h5>
+                    <p class="card-text">
+                        Sertifikalı ve deneyimli antrenörler sizi rehber edebilir.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Özellik 4: Çeşitli Hizmetler -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="fas fa-spa text-info" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                    <h5 class="card-title">Çeşitli Hizmetler</h5>
+                    <p class="card-text">
+                        Yoga, Pilates, Fitness ve daha birçok hizmetden yararlanın.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================
+     HİZMETLER BÖLÜMÜ (Services)
+     ======================================== -->
+<section class="mb-5">
+    <h2 class="text-center mb-4">
+        <i class="fas fa-list"></i> Sunduğumuz Hizmetler
+    </h2>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="fas fa-running"></i> Fitness Antrenmanı</h6>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Güç antrenmanı, kardiyovasküler egzersiz ve esneklik çalışmaları.
+                    </p>
+                    <small class="text-muted">Süre: 60 dakika</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="fas fa-om"></i> Yoga Dersi</h6>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Zihin ve beden dengesi için yapılan yoga pratikleri.
+                    </p>
+                    <small class="text-muted">Süre: 75 dakika</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-person"></i> Pilates</h6>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Çekirdek kas gücü ve postür iyileştirme için tasarlanan egzersizler.
+                    </p>
+                    <small class="text-muted">Süre: 50 dakika</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================
+     ÇAĞRI YAPILACAK BÖLÜMÜ (Call to Action)
+     ======================================== -->
+<section class="bg-light py-5 rounded mb-5">
+    <div class="container text-center">
+        <h3 class="mb-4">Sağlıklı Yaşama Başlamaya Hazır mısınız?</h3>
+        <p class="lead mb-4">
+            Hemen üye olun ve profesyonel antrenörlerimizle çalışmaya başlayın.
+        </p>
+        <a href="/Identity/Account/Register" class="btn btn-success btn-lg">
+            <i class="fas fa-user-plus"></i> Şimdi Kayıt Ol
+        </a>
+        <span class="mx-3 text-muted">veya</span>
+        <a href="/Identity/Account/Login" class="btn btn-primary btn-lg">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+        </a>
+    </div>
+</section>
+
+<!-- ========================================
+     İSTATİSTİKLER BÖLÜMÜ (Statistics)
+     ======================================== -->
+<section class="mb-5">
+    <h2 class="text-center mb-4">
+        <i class="fas fa-chart-bar"></i> Başarı Hikayeleri
+    </h2>
+    <div class="row text-center">
+        <div class="col-md-3">
+            <div class="p-4">
+                <h3 class="text-primary fw-bold" style="font-size: 2.5rem;">500+</h3>
+                <p>Aktif Üye</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <h3 class="text-success fw-bold" style="font-size: 2.5rem;">50+</h3>
+                <p>Uzman Antrenör</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <h3 class="text-warning fw-bold" style="font-size: 2.5rem;">15+</h3>
+                <p>Farklı Hizmet</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <h3 class="text-info fw-bold" style="font-size: 2.5rem;">8</h3>
+                <p>Spor Salonu</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================
+     İLETİŞİM BÖLÜMÜ (Contact)
+     ======================================== -->
+<section class="bg-dark text-white py-5 rounded">
+    <div class="container text-center">
+        <h3 class="mb-4">Sorularınız mı Var?</h3>
+        <p class="lead mb-4">
+            Bizimle iletişime geçin. Ekibimiz size yardımcı olmaktan mutlu olur.
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <p>
+                    <i class="fas fa-phone"></i> <strong>Telefon:</strong><br>
+                    +90 (212) 555-1234
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <i class="fas fa-envelope"></i> <strong>Email:</strong><br>
+                    info@fitnesscenter.com
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> <strong>Adres:</strong><br>
+                    İstanbul, Türkiye
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,112 @@
+@model IEnumerable<Hizmet>
+
+@{
+    ViewData["Title"] = "Hizmetler";
+}
+
+<!-- ========================================
+     BAŞLIK BÖLÜMÜ
+     ======================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-spa"></i> Hizmetler
+    </h1>
+    
+    <!-- Admin: Yeni Hizmet Ekle Butonu -->
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Hizmetler/Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Hizmet Ekle
+        </a>
+    }
+</div>
+
+<!-- ========================================
+     HIZMETLER TABLOSU
+     ======================================== -->
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Hizmet Adı</th>
+                <th>Spor Salonu</th>
+                <th>Süre (Dakika)</th>
+                <th>Ücret (₺)</th>
+                <th>Açıklama</th>
+                <th class="text-center">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox"></i> Henüz hizmet kayıtlı değil.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var hizmet in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@hizmet.Ad</strong>
+                        </td>
+                        <td>
+                            @if (hizmet.SporSalonu != null)
+                            {
+                                <span class="badge bg-info">@hizmet.SporSalonu.Ad</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            <i class="fas fa-clock text-warning"></i> @hizmet.SureDakika dk
+                        </td>
+                        <td>
+                            <strong class="text-success">₺@hizmet.Ucret.ToString("F2")</strong>
+                        </td>
+                        <td>
+                            <small>@(hizmet.Aciklama?.Length > 50 ? hizmet.Aciklama.Substring(0, 50) + "..." : hizmet.Aciklama)</small>
+                        </td>
+                        <td class="text-center">
+                            <!-- Detay Butonu -->
+                            <a href="/Hizmetler/Details/@hizmet.Id" class="btn btn-sm btn-info" title="Detay">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
+                            <!-- Admin: Düzenle Butonu -->
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="/Hizmetler/Edit/@hizmet.Id" class="btn btn-sm btn-warning" title="Düzenle">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                <!-- Admin: Sil Butonu -->
+                                <a href="/Hizmetler/Delete/@hizmet.Id" class="btn btn-sm btn-danger" title="Sil">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- ========================================
+     UYARI MESAJI (Eğer Hizmet Varsa)
+     ======================================== -->
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4 text-muted">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Toplam <strong>@Model.Count()</strong> hizmet bulunmaktadır.
+        </small>
+    </div>
+}

@@ -1,0 +1,127 @@
+@model IEnumerable<Antrenor>
+
+@{
+    ViewData["Title"] = "Antrenörler";
+}
+
+<!-- ========================================
+     BAŞLIK BÖLÜMÜ
+     ======================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-person"></i> Antrenörler
+    </h1>
+    
+    <!-- Admin: Yeni Antrenör Ekle Butonu -->
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Antrenorler/Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Antrenör Ekle
+        </a>
+    }
+</div>
+
+<!-- ========================================
+     ANTRENÖRLER GRID GÖRÜNÜMÜ
+     ======================================== -->
+<div class="row g-4">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-info text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 2rem;"></i>
+                <p class="mt-3">Henüz antrenör kayıtlı değil.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var antrenor in Model.OrderBy(a => a.Ad))
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <!-- Üst Bilgi -->
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-dumbbell"></i> @antrenor.Ad @antrenor.Soyad
+                        </h5>
+                    </div>
+
+                    <!-- Antrenör Bilgileri -->
+                    <div class="card-body">
+                        <!-- Spor Salonu -->
+                        @if (antrenor.SporSalonu != null)
+                        {
+                            <p class="mb-2">
+                                <strong><i class="fas fa-building"></i> Salon:</strong>
+                                <br>
+                                <span class="badge bg-info">@antrenor.SporSalonu.Ad</span>
+                            </p>
+                        }
+
+                        <!-- Uzmanlık Alanları -->
+                        <p class="mb-2">
+                            <strong><i class="fas fa-certificate"></i> Uzmanlıklar:</strong>
+                            <br>
+                            <small>@antrenor.UzmanlıkAlanlari</small>
+                        </p>
+
+                        <!-- Çalışma Saatleri -->
+                        <p class="mb-2">
+                            <strong><i class="fas fa-clock"></i> Çalışma Saati:</strong>
+                            <br>
+                            <small>@antrenor.MevcutBaslangicSaati:00 - @antrenor.MevcutBitisSaati:00</small>
+                        </p>
+
+                        <!-- İletişim Bilgileri -->
+                        <p class="mb-2">
+                            <strong><i class="fas fa-envelope"></i> Email:</strong>
+                            <br>
+                            <small>@antrenor.Email</small>
+                        </p>
+
+                        <p class="mb-0">
+                            <strong><i class="fas fa-phone"></i> Telefon:</strong>
+                            <br>
+                            <small>@antrenor.Telefon</small>
+                        </p>
+                    </div>
+
+                    <!-- İşlemler (Butonlar) -->
+                    <div class="card-footer bg-light">
+                        <!-- Detay Butonu -->
+                        <a href="/Antrenorler/Details/@antrenor.Id" class="btn btn-sm btn-info me-2" title="Detay">
+                            <i class="fas fa-eye"></i> Detay
+                        </a>
+
+                        <!-- Admin: Düzenle Butonu -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/Antrenorler/Edit/@antrenor.Id" class="btn btn-sm btn-warning me-2" title="Düzenle">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+
+                            <!-- Admin: Sil Butonu -->
+                            <a href="/Antrenorler/Delete/@antrenor.Id" class="btn btn-sm btn-danger" title="Sil">
+                                <i class="fas fa-trash"></i> Sil
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- ========================================
+     TOPLAM ANTRENÖR SAYISI
+     ======================================== -->
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4 text-muted">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Toplam <strong>@Model.Count()</strong> antrenör bulunmaktadır.
+        </small>
+    </div>
+}

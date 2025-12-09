@@ -1,0 +1,142 @@
+@model IEnumerable<Uye>
+
+@{
+    ViewData["Title"] = "Üyeler";
+}
+
+<!-- ========================================
+     BAŞLIK BÖLÜMÜ
+     ======================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-users"></i> Üyeler
+    </h1>
+    
+    <!-- Admin Üye Yönetim Notu -->
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="alert alert-info mb-0">
+            <small><i class="fas fa-info-circle"></i> Admin olarak tüm üyeleri yönetebilirsiniz.</small>
+        </div>
+    }
+</div>
+
+<!-- ========================================
+     ÜYELER TABLOSU
+     ======================================== -->
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Doğum Tarihi</th>
+                <th>Cinsiyet</th>
+                <th>Fitness Hedefi</th>
+                <th>Fiziksel Bilgiler</th>
+                <th class="text-center">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox"></i> Henüz üye kayıtlı değil.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var uye in Model.OrderBy(u => u.Ad))
+                {
+                    <tr>
+                        <td>
+                            <strong>@uye.Ad @uye.Soyad</strong>
+                        </td>
+                        <td>
+                            <small>@uye.DogumTarihi?.ToShortDateString()</small>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(uye.Cinsiyet))
+                            {
+                                @if (uye.Cinsiyet == "Erkek")
+                                {
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-mars"></i> Erkek
+                                    </span>
+                                }
+                                else if (uye.Cinsiyet == "Kadın")
+                                {
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-venus"></i> Kadın
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@uye.Cinsiyet</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(uye.FitnessHedefi))
+                            {
+                                <span class="badge bg-info">@uye.FitnessHedefi</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            <small>
+                                @if (uye.BouSantimetre.HasValue)
+                                {
+                                    <span class="me-2">📏 @uye.BouSantimetre cm</span>
+                                }
+                                @if (uye.AgirlikKilogram.HasValue)
+                                {
+                                    <span>⚖️ @uye.AgirlikKilogram kg</span>
+                                }
+                                @if (!uye.BouSantimetre.HasValue && !uye.AgirlikKilogram.HasValue)
+                                {
+                                    <span class="text-muted">Bilgi yok</span>
+                                }
+                            </small>
+                        </td>
+                        <td class="text-center">
+                            <!-- Detay Butonu -->
+                            <a href="/Uyeler/Details/@uye.Id" class="btn btn-sm btn-info" title="Detay">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
+                            <!-- Admin: Sil Butonu -->
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="/Uyeler/Delete/@uye.Id" class="btn btn-sm btn-danger" title="Sil">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- ========================================
+     TOPLAM ÜYE SAYISI
+     ======================================== -->
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4 text-muted">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Toplam <strong>@Model.Count()</strong> üye bulunmaktadır.
+        </small>
+    </div>
+}

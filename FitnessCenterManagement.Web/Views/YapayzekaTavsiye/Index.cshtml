@@ -1,0 +1,187 @@
+@model IEnumerable<YapayzekaTavsiye>
+
+@{
+    ViewData["Title"] = "Yapay Zeka Tavsiyeleri";
+}
+
+<!-- ========================================
+     BAŞLIK BÖLÜMÜ
+     ======================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-brain"></i> Yapay Zeka Tavsiyeleri
+    </h1>
+    
+    <!-- Üye: Yeni Tavsiye Al Butonu -->
+    @if (User.IsInRole("Uye"))
+    {
+        <div class="btn-group" role="group">
+            <a href="/YapayzekaTavsiye/EgzersizTavsiyesi" class="btn btn-primary">
+                <i class="fas fa-running"></i> Egzersiz Planı
+            </a>
+            <a href="/YapayzekaTavsiye/DiyetTavsiyesi" class="btn btn-info">
+                <i class="fas fa-apple-alt"></i> Diyet Planı
+            </a>
+            <a href="/YapayzekaTavsiye/VucutTipiAnalizi" class="btn btn-success">
+                <i class="fas fa-chart-bar"></i> Vücut Analizi
+            </a>
+        </div>
+    }
+</div>
+
+<!-- ========================================
+     TAVSIYELERI GRID GÖRÜNÜMÜ
+     ======================================== -->
+<div class="row g-4">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-info text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 2rem;"></i>
+                <p class="mt-3">Henüz tavsiye kaydı yok.</p>
+                @if (User.IsInRole("Uye"))
+                {
+                    <p>
+                        <a href="/YapayzekaTavsiye/EgzersizTavsiyesi" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Tavsiye Al
+                        </a>
+                    </p>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var tavsiye in Model.OrderByDescending(t => t.OlusturmaTarihi))
+        {
+            <!-- Tavsiye Kartı -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <!-- Kart Üstü - Tavsiye Tipi -->
+                    <div class="card-header text-white 
+                        @if (tavsiye.TavsiyeTipi == "EgzersizPlani")
+                        {
+                            @Html.Raw("bg-primary")
+                        }
+                        else if (tavsiye.TavsiyeTipi == "DiyetPlani")
+                        {
+                            @Html.Raw("bg-info")
+                        }
+                        else if (tavsiye.TavsiyeTipi == "VucutTipiAnalizi")
+                        {
+                            @Html.Raw("bg-success")
+                        }
+                        else
+                        {
+                            @Html.Raw("bg-secondary")
+                        }
+                    ">
+                        @if (tavsiye.TavsiyeTipi == "EgzersizPlani")
+                        {
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-running"></i> Egzersiz Planı
+                            </h5>
+                        }
+                        else if (tavsiye.TavsiyeTipi == "DiyetPlani")
+                        {
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-apple-alt"></i> Diyet Planı
+                            </h5>
+                        }
+                        else if (tavsiye.TavsiyeTipi == "VucutTipiAnalizi")
+                        {
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-bar"></i> Vücut Analizi
+                            </h5>
+                        }
+                    </div>
+
+                    <!-- Kart İçeriği -->
+                    <div class="card-body">
+                        <!-- Oluşturma Tarihi -->
+                        <p class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> 
+                                @tavsiye.OlusturmaTarihi.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+                        </p>
+
+                        <!-- Cevap Tarihi (Eğer varsa) -->
+                        @if (tavsiye.CevapTarihi.HasValue)
+                        {
+                            <p class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle"></i>
+                                    Cevaplandi: @tavsiye.CevapTarihi.Value.ToString("dd/MM/yyyy HH:mm")
+                                </small>
+                            </p>
+                        }
+
+                        <!-- Durumu -->
+                        <p class="mb-3">
+                            @if (tavsiye.IslemBasarili)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check"></i> Başarılı
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times"></i> Başarısız
+                                </span>
+                            }
+                        </p>
+
+                        <!-- Kısaltılmış Çıktı -->
+                        @if (!string.IsNullOrEmpty(tavsiye.CiktiVeri))
+                        {
+                            <p class="mb-0">
+                                <small>
+                                    @if (tavsiye.CiktiVeri.Length > 150)
+                                    {
+                                        @Html.Raw(tavsiye.CiktiVeri.Substring(0, 150) + "...")
+                                    }
+                                    else
+                                    {
+                                        @tavsiye.CiktiVeri
+                                    }
+                                </small>
+                            </p>
+                        }
+
+                        <!-- Hata Mesajı (Eğer varsa) -->
+                        @if (!string.IsNullOrEmpty(tavsiye.HataMesaji) && !tavsiye.IslemBasarili)
+                        {
+                            <p class="mt-2 mb-0">
+                                <small class="text-danger">
+                                    <i class="fas fa-exclamation-circle"></i> @tavsiye.HataMesaji
+                                </small>
+                            </p>
+                        }
+                    </div>
+
+                    <!-- Kart Altı - Butonlar -->
+                    <div class="card-footer bg-light">
+                        <a href="/YapayzekaTavsiye/Details/@tavsiye.Id" class="btn btn-sm btn-info w-100">
+                            <i class="fas fa-eye"></i> Tam Detay
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- ========================================
+     TOPLAM TAVSİYE SAYISI
+     ======================================== -->
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4 text-muted">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Toplam <strong>@Model.Count()</strong> tavsiye bulunmaktadır.
+        </small>
+    </div>
+}
