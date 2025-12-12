@@ -46,6 +46,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 builder.Services.AddScoped<IYapayzekaSirvisi, YapayzekaSirvisi>();
 builder.Services.AddScoped<IRendevuSirvisi, RendevuSirvisi>();
 
+// OpenAI Client'i register et
+// HttpClient factory pattern kullan
+builder.Services.AddHttpClient<OpenAiClient>();
+
 // ================================================
 // ================================================
 // 5. VERİTABANI BAŞLATILMASI======================
