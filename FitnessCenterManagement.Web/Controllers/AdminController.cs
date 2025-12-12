@@ -212,64 +212,6 @@ namespace FitnessCenterManagement.Web.Controllers
         }
 
         /// <summary>
-        /// Hizmet Gelir Raporları
-        /// GET: /Admin/RevenueReport
-        /// </summary>
-        public async Task<IActionResult> RevenueReport()
-        {
-            try
-            {
-                _logger.LogInformation("Gelir raporu yükleniyor");
-
-                // Onaylı randevuların gelirini hesapla
-                var toplamGelir = await _context.Randevular
-                    .Where(r => r.Durum == "Onaylı")
-                    .SumAsync(r => r.Ucret);
-
-                // Hizmet bazında gelir
-                var hizmetGelir = await _context.Randevular
-                    .Where(r => r.Durum == "Onaylı")
-                    .Include(r => r.Hizmet)
-                    .GroupBy(r => r.Hizmet.Ad)
-                    .Select(g => new
-                    {
-                        hizmetAdi = g.Key,
-                        toplamGelir = g.Sum(r => r.Ucret),
-                        randevuSayisi = g.Count()
-                    })
-                    .OrderByDescending(g => g.toplamGelir)
-                    .ToListAsync();
-
-                // Antrenör bazında gelir
-                var antrenorGelir = await _context.Randevular
-                    .Where(r => r.Durum == "Onaylı")
-                    .Include(r => r.Antrenor)
-                    .GroupBy(r => r.Antrenor.Ad + " " + r.Antrenor.Soyad)
-                    .Select(g => new
-                    {
-                        antrenorAdi = g.Key,
-                        toplamGelir = g.Sum(r => r.Ucret),
-                        randevuSayisi = g.Count()
-                    })
-                    .OrderByDescending(g => g.toplamGelir)
-                    .ToListAsync();
-
-                ViewBag.ToplamGelir = toplamGelir;
-                ViewBag.HizmetGelir = hizmetGelir;
-                ViewBag.AntrenorGelir = antrenorGelir;
-
-                _logger.LogInformation("Gelir raporu hazırlandı - Toplam: {ToplamGelir}", toplamGelir);
-
-                return View();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Gelir raporu yüklenirken hata oluştu");
-                return View("Error");
-            }
-        }
-
-        /// <summary>
         /// Admin İşlemleri Log'u
         /// GET: /Admin/ActivityLog
         /// </summary>

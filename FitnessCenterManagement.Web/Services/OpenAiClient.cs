@@ -31,10 +31,7 @@ namespace FitnessCenterManagement.Web.Services
         private const string OpenAiApiUrl = "https://api.openai.com/v1/chat/completions";
 
         /// <summary>
-        /// GPT Model adı - gpt-3.5-turbo (ucuz ve yeterli)
-        /// Alternatifler:
-        /// - gpt-4-turbo: Daha güçlü ama pahalı
-        /// - gpt-4o: Çok pahalı
+        /// GPT Model adı - gpt-3.5-turbo (ucuz ve yeterli)          
         /// </summary>
         private const string ModelName = "gpt-3.5-turbo";
 

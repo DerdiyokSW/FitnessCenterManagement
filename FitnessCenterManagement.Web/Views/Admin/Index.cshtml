@@ -1,361 +1,163 @@
 @{
-    ViewData["Title"] = "Admin Paneli - Yönetim Merkezi";
+    ViewData["Title"] = "Admin Paneli";
 }
 
-<!-- Admin Paneli Başlık -->
+<!-- Sayfa Başlığı -->
 <div class="page-header mb-4">
     <h1 class="h2">
         <i class="fas fa-tachometer-alt"></i> Admin Paneli
     </h1>
-    <p class="text-muted">Fitness Center Yönetim Sistemi</p>
+    <p class="text-muted">Sistem Yönetim Merkezi</p>
 </div>
 
-<!-- Hoş Geldin Kartı -->
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <h4 class="alert-heading">
-        <i class="fas fa-info-circle"></i> Hoş Geldiniz!
-    </h4>
-    <!-- Admin tarafından yapılabilecek işlemler -->
-    <p>
-        Admin panelinden tüm sistem verilerini yönetebilirsiniz. 
-        Lütfen aşağıdaki yönetim alanlarından birini seçiniz.
-    </p>
-    <hr>
-    <p class="mb-0">
-        <strong>Son güncellenme:</strong> 
-        <time datetime="@DateTime.Now.ToString("o")">@DateTime.Now.ToString("dd.MM.yyyy HH:mm")</time>
-    </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
-</div>
-
-<!-- Yönetim Kartları Başlık -->
-<h2 class="h4 mb-3">
-    <i class="fas fa-cog"></i> Yönetim Alanları
-</h2>
-
-<!-- Yönetim Kartları Grid -->
-<div class="row g-4 mb-4">
-    <!-- Spor Salonları Yönetimi -->
+<!-- Yönetim Kartları -->
+<div class="row g-4">
+    <!-- Spor Salonları -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-primary bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-dumbbell text-primary fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Spor Salonları</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    Spor salonlarını ekleyip yönetin, çalışma saatlerini belirleyin.
-                </p>
-                <a href="@Url.Action("Index", "SporSalonu")" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-edit"></i> Yönet
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Spor Salonları</h5>
+                <p class="text-muted small">Salonları yönet</p>
+                <a href="@Url.Action("Index", "SporSalonu")" class="btn btn-sm btn-primary">
+                    <i class="fas fa-arrow-right"></i> Yönet
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Antrenörler Yönetimi -->
+    <!-- Antrenörler -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-success bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-user-tie text-success fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Antrenörler</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    Antrenörleri ekleyip, uzmanlık alanlarını ve çalışma saatlerini yönetin.
-                </p>
-                <a href="@Url.Action("Index", "Antrenorler")" class="btn btn-sm btn-outline-success">
-                    <i class="fas fa-edit"></i> Yönet
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-user-tie fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Antrenörler</h5>
+                <p class="text-muted small">Antrenörleri yönet</p>
+                <a href="@Url.Action("Index", "Antrenorler")" class="btn btn-sm btn-success">
+                    <i class="fas fa-arrow-right"></i> Yönet
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Hizmetler Yönetimi -->
+    <!-- Hizmetler -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-info bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-spa text-info fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Hizmetler</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    Yoga, Pilates, Fitness gibi hizmetleri ekleyip ve ücretlerini belirleyin.
-                </p>
-                <a href="@Url.Action("Index", "Hizmetler")" class="btn btn-sm btn-outline-info">
-                    <i class="fas fa-edit"></i> Yönet
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-spa fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Hizmetler</h5>
+                <p class="text-muted small">Hizmetleri yönet</p>
+                <a href="@Url.Action("Index", "Hizmetler")" class="btn btn-sm btn-info">
+                    <i class="fas fa-arrow-right"></i> Yönet
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Üyeler Yönetimi -->
+    <!-- Üyeler -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-warning bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-users text-warning fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Üyeler</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    Sistem üyelerini görüntüleyin ve yönetin.
-                </p>
-                <a href="@Url.Action("Index", "Uyeler")" class="btn btn-sm btn-outline-warning">
-                    <i class="fas fa-edit"></i> Yönet
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">Üyeler</h5>
+                <p class="text-muted small">Üyeleri yönet</p>
+                <a href="@Url.Action("Index", "Uyeler")" class="btn btn-sm btn-warning">
+                    <i class="fas fa-arrow-right"></i> Yönet
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Randevular Yönetimi -->
+    <!-- Randevular -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-danger bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-calendar-alt text-danger fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Randevular</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    Tüm randevuları görüntüleyin, onaylayın ve yönetin.
-                </p>
-                <a href="@Url.Action("Index", "Randevu")" class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-edit"></i> Yönet
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-calendar-check fa-3x text-danger mb-3"></i>
+                <h5 class="card-title">Randevular</h5>
+                <p class="text-muted small">Randevuları yönet ve onayla</p>
+                <a href="@Url.Action("ManageRandevu", "Admin")" class="btn btn-sm btn-danger">
+                    <i class="fas fa-arrow-right"></i> Yönet
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- API Yönetimi -->
+    <!-- REST API -->
     <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 hover-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="icon-box bg-secondary bg-opacity-10 p-3 rounded-3 me-3">
-                        <i class="fas fa-plug text-secondary fa-2x"></i>
-                    </div>
-                    <h5 class="card-title mb-0">REST API</h5>
-                </div>
-                <p class="card-text text-muted small">
-                    API kullanımı ve filtreleme örneklerini görüntüleyin.
-                </p>
-                <a href="#api-docs" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse">
-                    <i class="fas fa-book"></i> Dokümantasyon
-                </a>
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-plug fa-3x text-secondary mb-3"></i>
+                <h5 class="card-title">REST API</h5>
+                <p class="text-muted small">API Dokümantasyonu</p>
+                <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse" data-bs-target="#apiDocs">
+                    <i class="fas fa-book"></i> Göster
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-    /* Kartlar üzerine gelince efekt -->
-    .hover-card {
-        transition: all 0.3s ease-in-out;
-    }
-
-    .hover-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    }
-
-    /* İkon kutusu -->
-    .icon-box {
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Hızlı İstatistikler */
-    .stat-card {
-        border-left: 4px solid;
-        padding-left: 15px;
-    }
-
-    .stat-card.primary {
-        border-color: #0d6efd;
-    }
-
-    .stat-card.success {
-        border-color: #198754;
-    }
-
-    .stat-card.info {
-        border-color: #0dcaf0;
-    }
-
-    .stat-card.danger {
-        border-color: #dc3545;
-    }
-</style>
-
-<!-- İstatistikler Bölümü -->
-<h2 class="h4 mb-3">
-    <i class="fas fa-chart-bar"></i> Hızlı İstatistikler
-</h2>
-
-<div class="row g-3 mb-4">
-    <!-- Toplam Spor Salonları -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card primary">
+<!-- İstatistikler -->
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center">
             <div class="card-body">
-                <h6 class="card-title text-muted mb-2">Spor Salonları</h6>
-                <h3 class="mb-0">@ViewBag.SporSalonuSayisi ?? 0</h3>
-                <small class="text-muted">Toplam kayıtlı salon</small>
+                <h5 class="text-muted">Spor Salonları</h5>
+                <h2 class="text-primary">@ViewBag.SporSalonuSayisi ?? 0</h2>
             </div>
         </div>
     </div>
-
-    <!-- Toplam Antrenörler -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card success">
+    <div class="col-md-3">
+        <div class="card text-center">
             <div class="card-body">
-                <h6 class="card-title text-muted mb-2">Antrenörler</h6>
-                <h3 class="mb-0">@ViewBag.AntrenorSayisi ?? 0</h3>
-                <small class="text-muted">Toplam antrenör</small>
+                <h5 class="text-muted">Antrenörler</h5>
+                <h2 class="text-success">@ViewBag.AntrenorSayisi ?? 0</h2>
             </div>
         </div>
     </div>
-
-    <!-- Toplam Üyeler -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card info">
+    <div class="col-md-3">
+        <div class="card text-center">
             <div class="card-body">
-                <h6 class="card-title text-muted mb-2">Üyeler</h6>
-                <h3 class="mb-0">@ViewBag.UyeSayisi ?? 0</h3>
-                <small class="text-muted">Aktif üye sayısı</small>
+                <h5 class="text-muted">Üyeler</h5>
+                <h2 class="text-warning">@ViewBag.UyeSayisi ?? 0</h2>
             </div>
         </div>
     </div>
-
-    <!-- Toplam Randevular -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card danger">
+    <div class="col-md-3">
+        <div class="card text-center">
             <div class="card-body">
-                <h6 class="card-title text-muted mb-2">Randevular</h6>
-                <h3 class="mb-0">@ViewBag.RandevuSayisi ?? 0</h3>
-                <small class="text-muted">Toplam randevu</small>
+                <h5 class="text-muted">Randevular</h5>
+                <h2 class="text-danger">@ViewBag.RandevuSayisi ?? 0</h2>
             </div>
         </div>
     </div>
 </div>
 
-<!-- REST API Dokümantasyon -->
-<div class="collapse" id="api-docs">
-    <div class="card mt-3">
+<!-- API Dokümantasyonu -->
+<div class="collapse mt-4" id="apiDocs">
+    <div class="card">
         <div class="card-header bg-light">
-            <h5 class="mb-0">
-                <i class="fas fa-code"></i> REST API Dokümantasyon
-            </h5>
+            <h6 class="mb-0">REST API Endpoints</h6>
         </div>
-        <div class="card-body">
-            <div class="alert alert-info">
-                <strong>API Base URL:</strong> <code>/api</code>
+        <div class="card-body small">
+            <div class="mb-3">
+                <strong>Antrenörler:</strong>
+                <ul>
+                    <li><code>GET /api/antrenorler</code> - Tüm antrenörleri listele</li>
+                    <li><code>GET /api/antrenorler/available?date=YYYY-MM-DD</code> - Müsait antrenörleri bul</li>
+                    <li><code>GET /api/antrenorler/search?uzmanlik=Yoga</code> - Uzmanlık alanına göre ara</li>
+                </ul>
             </div>
-
-            <!-- Antrenörler API -->
-            <h6 class="mt-4 mb-2">
-                <i class="fas fa-user-tie"></i> Antrenörler API
-            </h6>
-            <table class="table table-sm table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Endpoint</th>
-                        <th>Açıklama</th>
-                        <th>Parametreler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>GET /api/antrenorler</code></td>
-                        <td>Tüm antrenörleri listeler</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/antrenorler/available</code></td>
-                        <td>Müsait antrenörleri bulur</td>
-                        <td><code>date</code> (YYYY-MM-DD)</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/antrenorler/search</code></td>
-                        <td>Uzmanlık alanına göre ara</td>
-                        <td><code>uzmanlik</code> (string)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Randevular API -->
-            <h6 class="mt-4 mb-2">
-                <i class="fas fa-calendar-alt"></i> Randevular API
-            </h6>
-            <table class="table table-sm table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Endpoint</th>
-                        <th>Açıklama</th>
-                        <th>Parametreler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>GET /api/randevu</code></td>
-                        <td>Tüm randevuları listeler</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/randevu/uye/{uyeId}</code></td>
-                        <td>Üyenin randevularını getir</td>
-                        <td><code>uyeId</code> (int)</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/randevu/antrenor/{antrenorId}</code></td>
-                        <td>Antrenörün randevularını getir</td>
-                        <td><code>antrenorId</code> (int)</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/randevu/tarih-araligi</code></td>
-                        <td>Tarih aralığında randevu ara</td>
-                        <td><code>baslangic</code>, <code>bitis</code> (YYYY-MM-DD)</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET /api/randevu/durum/{durum}</code></td>
-                        <td>Duruma göre randevu listele</td>
-                        <td><code>durum</code> (string)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Örnek Kullanım -->
-            <h6 class="mt-4 mb-2">
-                <i class="fas fa-terminal"></i> Örnek Kullanım (cURL)
-            </h6>
-            <pre class="bg-light p-3 rounded"><code>
-# Tüm antrenörleri listele
-curl -X GET "https://localhost:7000/api/antrenorler" \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Müsait antrenörleri bul
-curl -X GET "https://localhost:7000/api/antrenorler/available?date=2025-12-15" \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Yoga uzmanı antrenörleri ara
-curl -X GET "https://localhost:7000/api/antrenorler/search?uzmanlik=Yoga" \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Üye randevularını getir
-curl -X GET "https://localhost:7000/api/randevu/uye/1" \
-  -H "Authorization: Bearer YOUR_TOKEN"
-            </code></pre>
+            <div>
+                <strong>Randevular:</strong>
+                <ul>
+                    <li><code>GET /api/randevu</code> - Tüm randevuları listele</li>
+                    <li><code>GET /api/randevu/uye/{uyeId}</code> - Üyenin randevuları</li>
+                    <li><code>GET /api/randevu/antrenor/{antrenorId}</code> - Antrenörün randevuları</li>
+                    <li><code>GET /api/randevu/tarih-araligi?baslangic=X&bitis=Y</code> - Tarih aralığı filtrelemesi</li>
+                    <li><code>GET /api/randevu/durum/{durum}</code> - Durum filtrelemesi</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
