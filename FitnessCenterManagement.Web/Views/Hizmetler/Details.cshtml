@@ -1,0 +1,45 @@
+@model Hizmet
+
+@{
+    ViewData["Title"] = Model?.Ad;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Ad</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad)</dd>
+
+                        <dt class="col-sm-3">Süre</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.SureDakika) dakika</dd>
+
+                        <dt class="col-sm-3">Ücret</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ucret) ₺</dd>
+
+                        <dt class="col-sm-3">Açıklama</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Aciklama)</dd>
+
+                        <dt class="col-sm-3">Spor Salonu</dt>
+                        <!-- Null-safe dereference: SporSalonu null olabilir -->
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.SporSalonu != null ? model.SporSalonu.Ad : "Belirtilmedi")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Düzenle
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">Geri</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+@model Antrenor
+
+@{
+    ViewData["Title"] = "Sil: " + Model?.Ad + " " + Model?.Soyad;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Bu antrenörü silmek istediğinizden emin misiniz?
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Adı Soyadı</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad) @Html.DisplayFor(model => model.Soyad)</dd>
+
+                        <dt class="col-sm-3">Uzmanlık</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.UzmanlıkAlanlari)</dd>
+
+                        <dt class="col-sm-3">Telefon</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Telefon)</dd>
+
+                        <dt class="col-sm-3">E-Posta</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+                        <dt class="col-sm-3">Çalışma Saatleri</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.MevcutBaslangicSaati) - @Html.DisplayFor(model => model.MevcutBitisSaati)</dd>
+
+                        <dt class="col-sm-3">Spor Salonu</dt>
+                        <!-- Null-safe dereference: SporSalonu null olabilir -->
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.SporSalonu != null ? model.SporSalonu.Ad : "Belirtilmedi")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="DeleteConfirmed" asp-controller="Antrenorler" method="post" class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</div>

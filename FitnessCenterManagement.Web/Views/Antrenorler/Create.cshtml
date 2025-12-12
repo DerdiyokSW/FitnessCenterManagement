@@ -1,0 +1,76 @@
+@model Antrenor
+
+@{
+    ViewData["Title"] = "Yeni Antrenör Ekle";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <form asp-action="Create" asp-controller="Antrenorler" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Ad" class="form-label">Adı*</label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Soyad" class="form-label">Soyadı*</label>
+                    <input asp-for="Soyad" class="form-control" />
+                    <span asp-validation-for="Soyad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UzmanlıkAlanlari" class="form-label">Uzmanlık Alanları</label>
+                    <input asp-for="UzmanlıkAlanlari" class="form-control" placeholder="örn: Fitness, Yoga, Pilates" />
+                    <span asp-validation-for="UzmanlıkAlanlari" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Telefon" class="form-label">Telefon</label>
+                    <input asp-for="Telefon" class="form-control" type="tel" />
+                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">E-Posta</label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MevcutBaslangicSaati" class="form-label">Başlangıç Saati</label>
+                    <input asp-for="MevcutBaslangicSaati" class="form-control" type="time" />
+                    <span asp-validation-for="MevcutBaslangicSaati" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MevcutBitisSaati" class="form-label">Bitiş Saati</label>
+                    <input asp-for="MevcutBitisSaati" class="form-control" type="time" />
+                    <span asp-validation-for="MevcutBitisSaati" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SporSalonuId" class="form-label">Spor Salonu*</label>
+                    <select asp-for="SporSalonuId" class="form-control" asp-items="ViewBag.SporSalonu"></select>
+                    <span asp-validation-for="SporSalonuId" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Ekle
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

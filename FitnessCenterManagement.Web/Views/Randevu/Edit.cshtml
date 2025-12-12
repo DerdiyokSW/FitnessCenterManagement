@@ -1,0 +1,66 @@
+@model Randevu
+
+@{
+    ViewData["Title"] = "Randevuyu Düzenle";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <form asp-action="Edit" asp-controller="Randevu" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="UyeId" />
+
+                <div class="mb-3">
+                    <label asp-for="AntrenorId" class="form-label">Antrenör*</label>
+                    <select asp-for="AntrenorId" class="form-control" asp-items="ViewBag.Antrenorler"></select>
+                    <span asp-validation-for="AntrenorId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="HizmetId" class="form-label">Hizmet*</label>
+                    <select asp-for="HizmetId" class="form-control" asp-items="ViewBag.Hizmetler"></select>
+                    <span asp-validation-for="HizmetId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BaslamaTarihi" class="form-label">Başlama Tarihi ve Saati*</label>
+                    <input asp-for="BaslamaTarihi" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="BaslamaTarihi" class="text-danger"></span>
+                </div>
+
+                <!-- Randevu ücreti (Ucret property kullanılır) -->
+                <div class="mb-3">
+                    <label asp-for="Ucret" class="form-label">Ücret (₺)*</label>
+                    <input asp-for="Ucret" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Ucret" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Durum" class="form-label">Durum</label>
+                    <select asp-for="Durum" class="form-control">
+                        <option value="Beklemede">Beklemede</option>
+                        <option value="Onaylandı">Onaylandı</option>
+                        <option value="İptal Edildi">İptal Edildi</option>
+                    </select>
+                    <span asp-validation-for="Durum" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Kaydet
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,74 @@
+@model Uye
+
+@{
+    ViewData["Title"] = "Profilimi Düzenle";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <form asp-action="Edit" asp-controller="Uyeler" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="KullaniciId" />
+
+                <div class="mb-3">
+                    <label asp-for="Ad" class="form-label">Adı*</label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Soyad" class="form-label">Soyadı*</label>
+                    <input asp-for="Soyad" class="form-control" />
+                    <span asp-validation-for="Soyad" class="text-danger"></span>
+                </div>
+
+                <!-- Boy bilgisi (BouSantimetre property kullanılır) -->
+                <div class="mb-3">
+                    <label asp-for="BouSantimetre" class="form-label">Boy (cm)*</label>
+                    <input asp-for="BouSantimetre" class="form-control" type="number" />
+                    <span asp-validation-for="BouSantimetre" class="text-danger"></span>
+                </div>
+
+                <!-- Ağırlık bilgisi (AgirlikKilogram property kullanılır) -->
+                <div class="mb-3">
+                    <label asp-for="AgirlikKilogram" class="form-label">Ağırlık (kg)*</label>
+                    <input asp-for="AgirlikKilogram" class="form-control" type="number" />
+                    <span asp-validation-for="AgirlikKilogram" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Cinsiyet" class="form-label">Cinsiyet</label>
+                    <select asp-for="Cinsiyet" class="form-control">
+                        <option value="">Seçiniz</option>
+                        <option value="Erkek">Erkek</option>
+                        <option value="Kadın">Kadın</option>
+                        <option value="Diğer">Diğer</option>
+                    </select>
+                    <span asp-validation-for="Cinsiyet" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FitnessHedefi" class="form-label">Fitness Hedefi</label>
+                    <textarea asp-for="FitnessHedefi" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="FitnessHedefi" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Kaydet
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

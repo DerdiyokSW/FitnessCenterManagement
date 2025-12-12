@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Vücut Tipi Analizi";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">
+                <i class="bi bi-robot"></i> @ViewData["Title"]
+            </h2>
+            
+            <form asp-action="VucutTipiAnalizi" method="post">
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Kişisel Bilgileriniz</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="Boy" class="form-label">Boy (cm)*</label>
+                            <input type="number" id="Boy" name="Boy" class="form-control" min="50" max="300" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Agirlik" class="form-label">Ağırlık (kg)*</label>
+                            <input type="number" id="Agirlik" name="Agirlik" class="form-control" min="10" max="300" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Cinsiyet" class="form-label">Cinsiyet*</label>
+                            <select id="Cinsiyet" name="Cinsiyet" class="form-control" required>
+                                <option value="">Seçiniz</option>
+                                <option value="Erkek">Erkek</option>
+                                <option value="Kadın">Kadın</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-success">
+                    <i class="bi bi-lightning-charge"></i> Analiz Et
+                </button>
+                <a asp-action="Index" class="btn btn-lg btn-secondary">İptal</a>
+            </form>
+
+            @if (ViewBag.Analiz != null)
+            {
+                <div class="card mt-4 border-success">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-check-circle"></i> Vücut Tipi Analiz Sonucu
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @Html.Raw(ViewBag.Analiz)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

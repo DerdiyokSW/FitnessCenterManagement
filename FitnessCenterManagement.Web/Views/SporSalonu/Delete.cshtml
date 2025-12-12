@@ -1,0 +1,43 @@
+@model SporSalonu
+
+@{
+    ViewData["Title"] = "Sil: " + Model?.Ad;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Bu salonu silmek istediğinizden emin misiniz?
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Ad</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad)</dd>
+
+                        <dt class="col-sm-3">Adres</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Adres)</dd>
+
+                        <dt class="col-sm-3">Çalışma Saatleri</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.CalismaZamanlari)</dd>
+
+                        <dt class="col-sm-3">Açıklama</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Aciklama)</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="DeleteConfirmed" asp-controller="SporSalonu" method="post" class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</div>

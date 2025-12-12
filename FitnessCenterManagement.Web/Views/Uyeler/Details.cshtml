@@ -1,0 +1,58 @@
+@model Uye
+
+@{
+    ViewData["Title"] = Model?.Ad + " " + Model?.Soyad + " - Profil";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Adı Soyadı</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad) @Html.DisplayFor(model => model.Soyad)</dd>
+
+                        <dt class="col-sm-3">Boy</dt>
+                        <!-- Boy bilgisi (BouSantimetre property kullanılır) -->
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.BouSantimetre) cm</dd>
+
+                        <dt class="col-sm-3">Ağırlık</dt>
+                        <!-- Ağırlık bilgisi (AgirlikKilogram property kullanılır) -->
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.AgirlikKilogram) kg</dd>
+
+                        <dt class="col-sm-3">Cinsiyet</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Cinsiyet)</dd>
+
+                        <dt class="col-sm-3">Fitness Hedefi</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.FitnessHedefi)</dd>
+
+                        <dt class="col-sm-3">BMI Hesaplama</dt>
+                        <dd class="col-sm-9">
+                            @{
+                                <!-- BMI hesaplama: BouSantimetre ve AgirlikKilogram kullanılır -->
+                                if (Model?.BouSantimetre > 0 && Model?.AgirlikKilogram > 0)
+                                {
+                                    double bmi = Model.AgirlikKilogram.Value / ((Model.BouSantimetre.Value / 100.0) * (Model.BouSantimetre.Value / 100.0));
+                                    <span class="badge bg-info">@bmi.ToString("F1")</span>
+                                }
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Düzenle
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">Geri</a>
+            </div>
+        </div>
+    </div>
+</div>

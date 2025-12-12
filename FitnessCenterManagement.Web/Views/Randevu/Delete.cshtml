@@ -1,0 +1,52 @@
+@model Randevu
+
+@{
+    ViewData["Title"] = "Randevuyu Sil";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Bu randevuyu silmek istediğinizden emin misiniz?
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Antrenör</dt>
+                        <!-- Null-safe: Antrenor null olabilir -->
+                        <dd class="col-sm-9">@(Model?.Antrenor?.Ad ?? "Belirtilmedi") @(Model?.Antrenor?.Soyad ?? "")</dd>
+
+                        <dt class="col-sm-3">Hizmet</dt>
+                        <!-- Null-safe: Hizmet null olabilir -->
+                        <dd class="col-sm-9">@(Model?.Hizmet?.Ad ?? "Belirtilmedi")</dd>
+
+                        <dt class="col-sm-3">Başlama</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.BaslamaTarihi)</dd>
+
+                        <dt class="col-sm-3">Bitiş</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.BitisTarihi)</dd>
+
+                        <dt class="col-sm-3">Ücret</dt>
+                        <!-- Randevu ücreti (Ucret property kullanılır) -->
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ucret) ₺</dd>
+
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Durum)</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="DeleteConfirmed" asp-controller="Randevu" method="post" class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</div>

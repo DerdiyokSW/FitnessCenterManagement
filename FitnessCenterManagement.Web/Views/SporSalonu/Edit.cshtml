@@ -1,0 +1,54 @@
+@model SporSalonu
+
+@{
+    ViewData["Title"] = "Spor Salonunu Düzenle";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <form asp-action="Edit" asp-controller="SporSalonu" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Ad" class="form-label">Spor Salonu Adı*</label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Adres" class="form-label">Adres*</label>
+                    <input asp-for="Adres" class="form-control" />
+                    <span asp-validation-for="Adres" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CalismaZamanlari" class="form-label">Çalışma Saatleri</label>
+                    <input asp-for="CalismaZamanlari" class="form-control" />
+                    <span asp-validation-for="CalismaZamanlari" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Aciklama" class="form-label">Açıklama</label>
+                    <textarea asp-for="Aciklama" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Aciklama" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Kaydet
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

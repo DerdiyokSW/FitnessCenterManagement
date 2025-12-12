@@ -1,0 +1,62 @@
+@model Randevu
+
+@{
+    ViewData["Title"] = "Randevu Detayları";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <!-- Null-safe: Hizmet null olabilir -->
+                    <h5 class="mb-0">@(Model?.Hizmet?.Ad ?? "Belirtilmedi")</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Antrenör</dt>
+                        <!-- Null-safe: Antrenor null olabilir -->
+                        <dd class="col-sm-9">@(Model?.Antrenor?.Ad ?? "Belirtilmedi") @(Model?.Antrenor?.Soyad ?? "")</dd>
+
+                        <dt class="col-sm-3">Başlama</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.BaslamaTarihi)</dd>
+
+                        <dt class="col-sm-3">Bitiş</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.BitisTarihi)</dd>
+
+                        <dt class="col-sm-3">Ücret</dt>
+                        <!-- Randevu ücreti (Ucret property kullanılır) -->
+                        <dd class="col-sm-9">
+                            <strong>@Html.DisplayFor(model => model.Ucret) ₺</strong>
+                        </dd>
+
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            @{
+                                var durumClass = Model?.Durum switch
+                                {
+                                    "Onaylandı" => "bg-success",
+                                    "İptal Edildi" => "bg-danger",
+                                    _ => "bg-warning"
+                                };
+                            }
+                            <span class="badge @durumClass">@Html.DisplayFor(model => model.Durum)</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Düzenle
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Sil
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">Geri</a>
+            </div>
+        </div>
+    </div>
+</div>
