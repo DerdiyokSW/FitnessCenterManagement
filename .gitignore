@@ -23,6 +23,7 @@ yarn.lock
 .env
 .env.local
 appsettings.Development.json
+appsettings.json
 
 # Logs
 logs/

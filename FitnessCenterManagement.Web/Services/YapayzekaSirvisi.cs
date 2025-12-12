@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace FitnessCenterManagement.Web.Services
@@ -9,44 +10,38 @@ namespace FitnessCenterManagement.Web.Services
     /// <summary>
     /// YapayzekaSirvisi - Yapay zeka tarafından tavsiye oluşturan gerçek implementasyon
     /// 
-    /// DİKKAT: Bu sürüm OpenAI API'ı çağırmamaktadır.
-    /// Üretime hazır hale getirilirken OpenAI API integration eklenmelidir.
-    /// 
-    /// Şu anda geliştirme amaçlı dummy (sahte) cevaplar döndürür.
+    /// OpenAI API'ı kullanarak:
+    /// - Kişiye özel egzersiz programları oluşturur
+    /// - Kişiye özel diyet planları oluşturur
+    /// - Vücut tipi analizi ve BMI hesaplaması yapar
     /// </summary>
     public class YapayzekaSirvisi : IYapayzekaSirvisi
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<YapayzekaSirvisi> _logger;
+        private readonly OpenAiClient _openAiClient;
 
         /// <summary>
         /// Constructor - Bağımlılıkları alır
         /// </summary>
-        public YapayzekaSirvisi(IConfiguration configuration, ILogger<YapayzekaSirvisi> logger)
+        public YapayzekaSirvisi(IConfiguration configuration, ILogger<YapayzekaSirvisi> logger, OpenAiClient openAiClient)
         {
             _configuration = configuration;
             _logger = logger;
+            _openAiClient = openAiClient;
         }
 
         /// <summary>
-        /// Fitness tavsiyesi oluşturur
-        /// Gerçek projede: OpenAI API'ı çağırır
-        /// Şu anda: Dummy (örnek) tavsiye döndürür
+        /// Fitness tavsiyesi oluşturur - OpenAI API'ı kullanarak
         /// </summary>
         public async Task<string> EgzersizTavsiyesiAl(int boy, int agirlik, string cinsiyet, string hedef)
         {
             try
             {
-                // ÖNEMLİ: Gerçek uygulamada OpenAI API'ı çağırılacak
-                // Geliştirme sırasında dummy veri döndürülüyor
-
                 _logger.LogInformation($"Egzersiz tavsiyesi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}, Hedef={hedef}");
 
-                // Simule edilmiş yapay zeka cevabı
-                string tavsiye = oluşturDummyEgzersizTavsiyesi(boy, agirlik, cinsiyet, hedef);
-
-                // Gerçekliği artırmak için kısa bir gecikme
-                await Task.Delay(1000);
+                // OpenAI API'ını çağır
+                var tavsiye = await _openAiClient.GetFitnessTavsiesiAsync(boy, agirlik, cinsiyet, hedef);
 
                 _logger.LogInformation("Egzersiz tavsiyesi başarıyla oluşturuldu.");
                 return tavsiye;
@@ -54,14 +49,13 @@ namespace FitnessCenterManagement.Web.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Egzersiz tavsiyesi oluşturma hatası: {ex.Message}");
-                throw;
+                // Hata durumunda dummy tavsiye döndür
+                return oluşturDummyEgzersizTavsiyesi(boy, agirlik, cinsiyet, hedef);
             }
         }
 
         /// <summary>
-        /// Diyet tavsiyesi oluşturur
-        /// Gerçek projede: OpenAI API'ı çağırır
-        /// Şu anda: Dummy (örnek) tavsiye döndürür
+        /// Diyet tavsiyesi oluşturur - OpenAI API'ı kullanarak
         /// </summary>
         public async Task<string> DiyetTavsiyesiAl(int boy, int agirlik, string cinsiyet, string hedef)
         {
@@ -69,11 +63,8 @@ namespace FitnessCenterManagement.Web.Services
             {
                 _logger.LogInformation($"Diyet tavsiyesi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}, Hedef={hedef}");
 
-                // Simule edilmiş yapay zeka cevabı
-                string tavsiye = oluşturDummyDiyetTavsiyesi(boy, agirlik, cinsiyet, hedef);
-
-                // Gerçekliği artırmak için kısa bir gecikme
-                await Task.Delay(1000);
+                // OpenAI API'ını çağır
+                var tavsiye = await _openAiClient.GetDiyetTavsiesiAsync(boy, agirlik, cinsiyet, hedef);
 
                 _logger.LogInformation("Diyet tavsiyesi başarıyla oluşturuldu.");
                 return tavsiye;
@@ -81,14 +72,13 @@ namespace FitnessCenterManagement.Web.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Diyet tavsiyesi oluşturma hatası: {ex.Message}");
-                throw;
+                // Hata durumunda dummy tavsiye döndür
+                return oluşturDummyDiyetTavsiyesi(boy, agirlik, cinsiyet, hedef);
             }
         }
 
         /// <summary>
-        /// Vücut tipi analizi yapar
-        /// Gerçek projede: OpenAI API'ı çağırır
-        /// Şu anda: Dummy (örnek) analiz döndürür
+        /// Vücut tipi analizi yapar - OpenAI API'ı kullanarak
         /// </summary>
         public async Task<string> VucutTipiAnaliziYap(int boy, int agirlik, string cinsiyet)
         {
@@ -96,11 +86,8 @@ namespace FitnessCenterManagement.Web.Services
             {
                 _logger.LogInformation($"Vücut tipi analizi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}");
 
-                // Simule edilmiş yapay zeka cevabı
-                string analiz = oluşturDummyVucutTipiAnalizi(boy, agirlik, cinsiyet);
-
-                // Gerçekliği artırmak için kısa bir gecikme
-                await Task.Delay(1000);
+                // OpenAI API'ını çağır
+                var analiz = await _openAiClient.GetVucutTipiAnaliziAsync(boy, agirlik, cinsiyet);
 
                 _logger.LogInformation("Vücut tipi analizi başarıyla oluşturuldu.");
                 return analiz;
@@ -108,7 +95,8 @@ namespace FitnessCenterManagement.Web.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Vücut tipi analizi hatası: {ex.Message}");
-                throw;
+                // Hata durumunda dummy analiz döndür
+                return oluşturDummyVucutTipiAnalizi(boy, agirlik, cinsiyet);
             }
         }
 
