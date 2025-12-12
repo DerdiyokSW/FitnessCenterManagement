@@ -14,7 +14,7 @@ namespace FitnessCenterManagement.Web.Services
     /// USAGE:
     /// - HttpClient dependency injection yapılmalı
     /// - appsettings.json'da OpenAI API key tanımlanmalı
-    /// - GPT-3.5-turbo model kullanılıyor
+    /// - GPT-3.5-turbo model kullanılıyor (ucuz ve stabil)
     /// 
     /// EXAMPLE:
     /// var response = await _openAiClient.CreateCompletionAsync(prompt);
@@ -31,7 +31,10 @@ namespace FitnessCenterManagement.Web.Services
         private const string OpenAiApiUrl = "https://api.openai.com/v1/chat/completions";
 
         /// <summary>
-        /// GPT Model adı
+        /// GPT Model adı - gpt-3.5-turbo (ucuz ve yeterli)
+        /// Alternatifler:
+        /// - gpt-4-turbo: Daha güçlü ama pahalı
+        /// - gpt-4o: Çok pahalı
         /// </summary>
         private const string ModelName = "gpt-3.5-turbo";
 
