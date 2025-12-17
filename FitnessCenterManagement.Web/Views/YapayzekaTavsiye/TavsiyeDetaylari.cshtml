@@ -1,0 +1,227 @@
+@model YapayzekaTavsiye
+
+@{
+    ViewData["Title"] = "Tavsiye Detayları";
+}
+
+<!-- Tavsiye detaylarını göster -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <!-- Sayfa başlığı -->
+            <h2 class="mb-4">
+                <i class="bi bi-book"></i> @ViewData["Title"]
+            </h2>
+
+            @if (Model == null)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Hata:</strong> Tavsiye bulunamadı.
+                </div>
+                <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+            }
+            else
+            {
+                <!-- Tavsiye Bilgileri Kartı -->
+                <div class="card mb-4 border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-info-circle"></i> 
+                            Tavsiye Bilgileri
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tavsiye Tipi -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Tavsiye Tipi</h6>
+                                <p class="fs-5">
+                                    @if (Model.TavsiyeTipi == "EgzersizPlani")
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-dumbbell"></i> Egzersiz Planı
+                                        </span>
+                                    }
+                                    else if (Model.TavsiyeTipi == "DiyetPlani")
+                                    {
+                                        <span class="badge bg-info">
+                                            <i class="bi bi-egg"></i> Diyet Planı
+                                        </span>
+                                    }
+                                    else if (Model.TavsiyeTipi == "VucutAnalizi")
+                                    {
+                                        <span class="badge bg-warning">
+                                            <i class="bi bi-graph-up"></i> Vücut Analizi
+                                        </span>
+                                    }
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Durumu</h6>
+                                <p class="fs-5">
+                                    @if (Model.IslemBasarili)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle"></i> Başarılı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-exclamation-circle"></i> Başarısız
+                                        </span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tarihler -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Tavsiye Oluşturulma Tarihi</h6>
+                                <p>@Model.OlusturmaTarihi.ToString("dd.MM.yyyy HH:mm")</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Cevap Tarihi</h6>
+                                <p>
+                                    @if (Model.CevapTarihi.HasValue)
+                                    {
+                                        @Model.CevapTarihi.Value.ToString("dd.MM.yyyy HH:mm")
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Henüz cevap alınmadı</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hata Mesajı (Varsa) -->
+                @if (!Model.IslemBasarili && !string.IsNullOrEmpty(Model.HataMesaji))
+                {
+                    <div class="alert alert-danger mb-4">
+                        <h5>
+                            <i class="bi bi-exclamation-triangle"></i> Hata Oluştu
+                        </h5>
+                        <p>@Model.HataMesaji</p>
+                    </div>
+                }
+
+                <!-- Girdi Verileri (Kişisel Bilgiler) -->
+                @if (!string.IsNullOrEmpty(Model.GirdiVeri))
+                {
+                    var girdiData = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(Model.GirdiVeri);
+                    
+                    <div class="card mb-4 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-person"></i> Girdi Bilgileri (Kişisel Veriler)
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-muted">Boy</h6>
+                                    <p class="fs-5"><strong>@girdiData?.boy cm</strong></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-muted">Ağırlık</h6>
+                                    <p class="fs-5"><strong>@girdiData?.agirlik kg</strong></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-muted">Cinsiyet</h6>
+                                    <p class="fs-5"><strong>@girdiData?.cinsiyet</strong></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-muted">Fitness Hedefi</h6>
+                                    <p class="fs-5"><strong>@girdiData?.hedef</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Yapay Zeka Çıktısı (Sonuç) -->
+                @if (!string.IsNullOrEmpty(Model.CiktiVeri))
+                {
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-lightbulb"></i> 
+                                @if (Model.TavsiyeTipi == "EgzersizPlani")
+                                {
+                                    <span>Egzersiz Tavsiyesi</span>
+                                }
+                                else if (Model.TavsiyeTipi == "DiyetPlani")
+                                {
+                                    <span>Diyet Tavsiyesi</span>
+                                }
+                                else if (Model.TavsiyeTipi == "VucutAnalizi")
+                                {
+                                    <span>Vücut Tipi Analizi</span>
+                                }
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Yapay zeka'nın oluşturduğu metin -->
+                            <div style="white-space: pre-wrap; line-height: 1.6;">
+                                @Html.Raw(Model.CiktiVeri.Replace("\n", "<br/>").Replace(" ", "&nbsp;"))
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (Model.IslemBasarili == false)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-hourglass"></i>
+                        <strong>Bilgi:</strong> Yapay zeka servisi yanıt vermiş fakat hata oluştu.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="bi bi-hourglass"></i>
+                        <strong>Bilgi:</strong> Tavsiye işlenecektir.
+                    </div>
+                }
+
+                <!-- Aksiyon Düğmeleri -->
+                <div class="mt-4 mb-5">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Tavsiyelere Dön
+                    </a>
+                    <a asp-action="EgzersizTavsiyesi" class="btn btn-primary">
+                        <i class="bi bi-dumbbell"></i> Egzersiz Tavsiyesi Al
+                    </a>
+                    <a asp-action="DiyetTavsiyesi" class="btn btn-info">
+                        <i class="bi bi-egg"></i> Diyet Tavsiyesi Al
+                    </a>
+                    <a asp-action="VucutTipiAnalizi" class="btn btn-warning">
+                        <i class="bi bi-graph-up"></i> Vücut Analizi Yap
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- CSS - Kustom stili -->
+<style>
+    /* Cıktı alanının stili */
+    .card-body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Pre-formatted metin -->
+    div[style*="white-space"] {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #28a745;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+</style>

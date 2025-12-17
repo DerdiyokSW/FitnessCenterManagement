@@ -1,0 +1,177 @@
+@model Uye
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<!-- Kişisel profil düzenleme sayfası -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Sayfa başlığı -->
+            <h2 class="mb-4">
+                <i class="bi bi-person-circle"></i> @ViewData["Title"]
+            </h2>
+
+            <!-- Başarı mesajı -->
+            @if (TempData["BasariliMesaj"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i>
+                    <strong>Başarılı!</strong> @TempData["BasariliMesaj"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (Model == null)
+            {
+                <!-- Profil yoksa mesaj göster -->
+                <div class="alert alert-info mb-4">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Bilgi:</strong> Henüz profilinizi oluşturmadınız. 
+                    <a asp-action="OlusturProfilim" class="alert-link">Profil oluşturmaya başlayın</a>
+                </div>
+            }
+            else
+            {
+                <!-- Profil Düzenleme Formu -->
+                <form asp-action="DuzenleProfilim" asp-controller="Uyeler" method="post">
+                    <!-- Tüm form hatalarını göster -->
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <!-- Gizli alanlar (veritabanından gelen ID'ler) -->
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="KullaniciId" />
+
+                    <!-- KİŞİSEL BİLGİLER BÖLÜMÜ -->
+                    <div class="card mb-4 border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-person"></i> Kişisel Bilgilerim
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Ad alanı -->
+                            <div class="mb-3">
+                                <label asp-for="Ad" class="form-label">Adınız*</label>
+                                <input asp-for="Ad" class="form-control" placeholder="Adınızı girin" />
+                                <span asp-validation-for="Ad" class="text-danger"></span>
+                            </div>
+
+                            <!-- Soyad alanı -->
+                            <div class="mb-3">
+                                <label asp-for="Soyad" class="form-label">Soyadınız*</label>
+                                <input asp-for="Soyad" class="form-control" placeholder="Soyadınızı girin" />
+                                <span asp-validation-for="Soyad" class="text-danger"></span>
+                            </div>
+
+                            <!-- Doğum Tarihi alanı -->
+                            <div class="mb-3">
+                                <label asp-for="DogumTarihi" class="form-label">Doğum Tarihi</label>
+                                <input asp-for="DogumTarihi" class="form-control" type="date" />
+                                <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FİZİKSEL ÖZELLİKLER BÖLÜMÜ -->
+                    <div class="card mb-4 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-graph-up"></i> Fiziksel Özelliklerim
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Boy bilgisi (cm cinsinden) -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label asp-for="BouSantimetre" class="form-label">Boy (cm)*</label>
+                                        <input asp-for="BouSantimetre" class="form-control" type="number" min="50" max="300" placeholder="örn: 180" />
+                                        <small class="text-muted">Santimetre cinsinden (50-300 cm)</small>
+                                        <span asp-validation-for="BouSantimetre" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Ağırlık bilgisi (kg cinsinden) -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label asp-for="AgirlikKilogram" class="form-label">Ağırlık (kg)*</label>
+                                        <input asp-for="AgirlikKilogram" class="form-control" type="number" min="10" max="300" placeholder="örn: 75" />
+                                        <small class="text-muted">Kilogram cinsinden (10-300 kg)</small>
+                                        <span asp-validation-for="AgirlikKilogram" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cinsiyet seçimi -->
+                            <div class="mb-3">
+                                <label asp-for="Cinsiyet" class="form-label">Cinsiyet*</label>
+                                <select asp-for="Cinsiyet" class="form-control">
+                                    <option value="">-- Seçiniz --</option>
+                                    <option value="Erkek">Erkek</option>
+                                    <option value="Kadın">Kadın</option>
+                                    <option value="Diğer">Diğer</option>
+                                </select>
+                                <span asp-validation-for="Cinsiyet" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FİTNESS HEDEFİ BÖLÜMÜ -->
+                    <div class="card mb-4 border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-target"></i> Fitness Hedefim
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Fitness Hedefi - açıklama -->
+                            <div class="mb-3">
+                                <label asp-for="FitnessHedefi" class="form-label">Hedeflerim*</label>
+                                <textarea asp-for="FitnessHedefi" class="form-control" rows="4" placeholder="Örn: Kilo verme, Kas kazanma, Dayanıklılık artırma, Sağlıklı yaşam..."></textarea>
+                                <small class="text-muted">
+                                    Lütfen ana hedeflerinizi yazınız. Bu bilgiler yapay zeka tarafından 
+                                    size özel egzersiz ve diyet planı oluşturmak için kullanılacaktır.
+                                </small>
+                                <span asp-validation-for="FitnessHedefi" class="text-danger"></span>
+                            </div>
+
+                            <!-- Bilgi notu -->
+                            <div class="alert alert-info">
+                                <i class="bi bi-lightbulb"></i>
+                                <strong>İpucu:</strong> Ne kadar detaylı bilgi verirseniz, 
+                                yapay zeka sizin için o kadar iyi kişiselleştirilmiş planlar oluşturabilir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DÜĞMELER -->
+                    <div class="d-flex gap-2 mb-5">
+                        <!-- Kaydet Düğmesi -->
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Kaydet
+                        </button>
+                        <!-- Ana Sayfaya Dön -->
+                        <a href="/" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Geri Dön
+                        </a>
+                        <!-- Egzersiz Tavsiyesi Al -->
+                        <a asp-action="EgzersizTavsiyesi" asp-controller="YapayzekaTavsiye" class="btn btn-success">
+                            <i class="bi bi-dumbbell"></i> Egzersiz Tavsiyesi
+                        </a>
+                        <!-- Diyet Tavsiyesi Al -->
+                        <a asp-action="DiyetTavsiyesi" asp-controller="YapayzekaTavsiye" class="btn btn-info">
+                            <i class="bi bi-egg"></i> Diyet Tavsiyesi
+                        </a>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Form doğrulama scriptleri -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
