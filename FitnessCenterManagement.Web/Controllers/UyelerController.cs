@@ -133,6 +133,8 @@ namespace FitnessCenterManagement.Web.Controllers
                 // Model doğrulama
                 if (!ModelState.IsValid)
                 {
+                    // Hata varsa formu yeniden göster
+                    _logger.LogWarning($"Profil oluşturmada model doğrulama hatası: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors))}");
                     return View(uye);
                 }
 
@@ -140,21 +142,22 @@ namespace FitnessCenterManagement.Web.Controllers
                 _dbContext.Add(uye);
                 await _dbContext.SaveChangesAsync();
 
-                _logger.LogInformation($"Yeni üye profili oluşturuldu: {uye.Ad} {uye.Soyad} (ID: {uye.Id})");
+                _logger.LogInformation($"Yeni üye profili oluşturuldu: {uye.Ad} {uye.Soyad} (ID: {uye.Id}, KullaniciId: {uye.KullaniciId})");
 
                 TempData["BasariliMesaj"] = "Profiliniz başarıyla oluşturuldu!";
                 return RedirectToAction(nameof(DuzenleProfilim));
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"Profil oluştururken veritabanı hatası: {ex.Message}");
-                ModelState.AddModelError("", "Profil oluşturulurken bir hata oluştu.");
+                _logger.LogError($"Profil oluştururken veritabanı hatası: {ex.InnerException?.Message ?? ex.Message}");
+                ModelState.AddModelError("", $"Profil oluşturulurken veritabanı hatası oluştu: {ex.InnerException?.Message ?? ex.Message}");
                 return View(uye);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Profil oluştururken hata: {ex.Message}");
-                return View("Error");
+                ModelState.AddModelError("", $"Profil oluşturulurken hata oluştu: {ex.Message}");
+                return View(uye);
             }
         }
 
@@ -204,7 +207,7 @@ namespace FitnessCenterManagement.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Uye")]
-        public async Task<IActionResult> DuzenleProfilim([Bind("Id,Ad,Soyad,DogumTarihi,BouSantimetre,AgirlikKilogram,Cinsiyet,FitnessHedefi")] Uye uye)
+        public async Task<IActionResult> DuzenleProfilim([Bind("Id,KullaniciId,Ad,Soyad,DogumTarihi,BouSantimetre,AgirlikKilogram,Cinsiyet,FitnessHedefi")] Uye uye)
         {
             try
             {
@@ -220,28 +223,46 @@ namespace FitnessCenterManagement.Web.Controllers
 
                 if (mevcutUye == null || mevcutUye.Id != uye.Id)
                 {
+                    _logger.LogWarning($"Yetkisiz profil düzenleme girişimi: {currentUser.Id}");
                     return Unauthorized();
                 }
 
                 // Model doğrulama
                 if (!ModelState.IsValid)
                 {
-                    return View(uye);
+                    _logger.LogWarning($"Profil düzenlemede model doğrulama hatası: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors))}");
+                    return View(mevcutUye); // Mevcut verileri göster
                 }
 
-                // Güncelle
-                _dbContext.Update(uye);
+                // Profili güncelle
+                mevcutUye.Ad = uye.Ad;
+                mevcutUye.Soyad = uye.Soyad;
+                mevcutUye.DogumTarihi = uye.DogumTarihi;
+                mevcutUye.BouSantimetre = uye.BouSantimetre;
+                mevcutUye.AgirlikKilogram = uye.AgirlikKilogram;
+                mevcutUye.Cinsiyet = uye.Cinsiyet;
+                mevcutUye.FitnessHedefi = uye.FitnessHedefi;
+
+                // Veritabanına kaydet
+                _dbContext.Update(mevcutUye);
                 await _dbContext.SaveChangesAsync();
 
-                _logger.LogInformation($"Üye profili güncellendi: {uye.Ad} {uye.Soyad} (ID: {uye.Id})");
+                _logger.LogInformation($"Üye profili güncellendi: {mevcutUye.Ad} {mevcutUye.Soyad} (ID: {mevcutUye.Id})");
 
                 TempData["BasariliMesaj"] = "Profiliniz başarıyla güncellendi!";
                 return RedirectToAction(nameof(DuzenleProfilim));
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"Profil güncellemede veritabanı hatası: {ex.InnerException?.Message ?? ex.Message}");
+                ModelState.AddModelError("", $"Profil güncellenirken veritabanı hatası oluştu: {ex.InnerException?.Message ?? ex.Message}");
+                return View(uye);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Profil güncellemede hata: {ex.Message}");
-                return View("Error");
+                ModelState.AddModelError("", $"Profil güncellenirken hata oluştu: {ex.Message}");
+                return View(uye);
             }
         }
 
