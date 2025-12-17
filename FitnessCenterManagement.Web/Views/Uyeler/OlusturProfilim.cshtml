@@ -1,0 +1,107 @@
+@model Uye
+
+@{
+    ViewData["Title"] = "Profilimi Oluştur";
+}
+
+<!-- Profil oluşturma sayfası - yeni üyeler için ilk adım -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Sayfa başlığı -->
+            <h2 class="mb-4">@ViewData["Title"]</h2>
+            
+            <!-- Açıklayıcı metin -->
+            <p class="text-muted mb-4">
+                Lütfen aşağıdaki bilgileri doldurun. Bu bilgiler yapay zeka tarafından 
+                size özel egzersiz, diyet ve vücut analizi önerileri sunması için gereklidir.
+            </p>
+            
+            <!-- Profil oluşturma formu -->
+            <form asp-action="OlusturProfilim" asp-controller="Uyeler" method="post">
+                <!-- Tüm form hatalarını göster -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <!-- Ad alanı -->
+                <div class="mb-3">
+                    <label asp-for="Ad" class="form-label">Adınız*</label>
+                    <input asp-for="Ad" class="form-control" placeholder="Adınızı girin" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+                </div>
+
+                <!-- Soyad alanı -->
+                <div class="mb-3">
+                    <label asp-for="Soyad" class="form-label">Soyadınız*</label>
+                    <input asp-for="Soyad" class="form-control" placeholder="Soyadınızı girin" />
+                    <span asp-validation-for="Soyad" class="text-danger"></span>
+                </div>
+
+                <!-- Doğum Tarihi alanı -->
+                <div class="mb-3">
+                    <label asp-for="DogumTarihi" class="form-label">Doğum Tarihi</label>
+                    <input asp-for="DogumTarihi" class="form-control" type="date" />
+                    <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+                </div>
+
+                <!-- Boy bilgisi (cm cinsinden) - Yapay zeka analizi için önemli -->
+                <div class="mb-3">
+                    <label asp-for="BouSantimetre" class="form-label">Boyunuz (cm)*</label>
+                    <input asp-for="BouSantimetre" class="form-control" type="number" min="50" max="300" placeholder="örn: 180" />
+                    <small class="text-muted">Santimetre cinsinden girin (örn: 160-190)</small>
+                    <span asp-validation-for="BouSantimetre" class="text-danger"></span>
+                </div>
+
+                <!-- Ağırlık bilgisi (kg cinsinden) - Yapay zeka analizi için önemli -->
+                <div class="mb-3">
+                    <label asp-for="AgirlikKilogram" class="form-label">Ağırlığınız (kg)*</label>
+                    <input asp-for="AgirlikKilogram" class="form-control" type="number" min="10" max="300" placeholder="örn: 75" />
+                    <small class="text-muted">Kilogram cinsinden girin</small>
+                    <span asp-validation-for="AgirlikKilogram" class="text-danger"></span>
+                </div>
+
+                <!-- Cinsiyet seçimi - Yapay zeka önerileri cinsiyet-spesifik olur -->
+                <div class="mb-3">
+                    <label asp-for="Cinsiyet" class="form-label">Cinsiyet*</label>
+                    <select asp-for="Cinsiyet" class="form-control">
+                        <option value="">-- Seçiniz --</option>
+                        <option value="Erkek">Erkek</option>
+                        <option value="Kadın">Kadın</option>
+                        <option value="Diğer">Diğer</option>
+                    </select>
+                    <span asp-validation-for="Cinsiyet" class="text-danger"></span>
+                </div>
+
+                <!-- Fitness Hedefi - Yapay zeka tarafından bunu dikkate alır -->
+                <div class="mb-3">
+                    <label asp-for="FitnessHedefi" class="form-label">Fitness Hedefi*</label>
+                    <textarea asp-for="FitnessHedefi" class="form-control" rows="3" placeholder="örn: Kilo verme, Kas kazanma, Dayanıklılık artırma, Sağlıklı yaşam"></textarea>
+                    <small class="text-muted">Lütfen ana hedeflerinizi yazınız</small>
+                    <span asp-validation-for="FitnessHedefi" class="text-danger"></span>
+                </div>
+
+                <!-- İletişim bilgileri -->
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Uyarı:</strong> Bu bilgiler yapay zeka tarafından size özel 
+                    egzersiz programı ve diyet planı oluşturmak için kullanılacaktır. 
+                    Lütfen doğru bilgiler girin.
+                </div>
+
+                <!-- Düğmeler -->
+                <div class="d-flex gap-2">
+                    <!-- Profil Oluştur Düğmesi -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Profil Oluştur
+                    </button>
+                    <!-- İptal Düğmesi -->
+                    <a href="/" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Form doğrulama scriptleri -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

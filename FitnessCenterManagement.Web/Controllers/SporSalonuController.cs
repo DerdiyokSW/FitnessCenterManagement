@@ -38,6 +38,7 @@ namespace FitnessCenterManagement.Web.Controllers
         /// Tüm spor salonlarını liste halinde gösterir
         /// Tüm giriş yapmış kullanıcılar görebilir
         /// </summary>
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             try

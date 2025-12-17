@@ -120,18 +120,34 @@ footer {
   border-radius: 6px;
   font-weight: 500;
   transition: all 0.3s;
+  color: black !important;
+}
+
+.btn-primary {
+  color: black !important;
 }
 
 .btn-primary:hover {
   background-color: #0b5ed7;
+  color: black !important;
+}
+
+.btn-success {
+  color: black !important;
 }
 
 .btn-success:hover {
   background-color: #0a58ca;
+  color: black !important;
+}
+
+.btn-danger {
+  color: black !important;
 }
 
 .btn-danger:hover {
   background-color: #dc3545;
+  color: black !important;
 }
 
 /* ========================================

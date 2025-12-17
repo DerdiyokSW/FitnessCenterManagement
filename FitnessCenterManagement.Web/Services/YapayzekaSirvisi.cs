@@ -14,16 +14,27 @@ namespace FitnessCenterManagement.Web.Services
     /// - Kişiye özel egzersiz programları oluşturur
     /// - Kişiye özel diyet planları oluşturur
     /// - Vücut tipi analizi ve BMI hesaplaması yapar
+    /// 
+    /// Özellikler:
+    /// - Hata yönetimi - API çöküş durumunda dummy data döndürür
+    /// - Logging - Her işlem ve hata kaydedilir
+    /// - Performans - Asenkron işlemler ile UI bloklanmaz
     /// </summary>
     public class YapayzekaSirvisi : IYapayzekaSirvisi
     {
+        // Konfigürasyon bilgileri (API key vb.)
         private readonly IConfiguration _configuration;
+        // Loglama - Debug ve hata takibi için
         private readonly ILogger<YapayzekaSirvisi> _logger;
+        // OpenAI API istemcisi
         private readonly OpenAiClient _openAiClient;
 
         /// <summary>
-        /// Constructor - Bağımlılıkları alır
+        /// Constructor - Bağımlılıkları alır (Dependency Injection)
         /// </summary>
+        /// <param name="configuration">Konfigürasyon dosyasından ayarları okur</param>
+        /// <param name="logger">Loglama işlemleri için</param>
+        /// <param name="openAiClient">OpenAI API'ye istek gönderme</param>
         public YapayzekaSirvisi(IConfiguration configuration, ILogger<YapayzekaSirvisi> logger, OpenAiClient openAiClient)
         {
             _configuration = configuration;
@@ -33,69 +44,98 @@ namespace FitnessCenterManagement.Web.Services
 
         /// <summary>
         /// Fitness tavsiyesi oluşturur - OpenAI API'ı kullanarak
+        /// Boy, ağırlık, cinsiyet ve hedef bilgisine göre
+        /// Kişiye özel antrenman programı oluşturur
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti (Erkek/Kadın/Diğer)</param>
+        /// <param name="hedef">Fitness hedefi (Kilo verme, Kas kazanma vb.)</param>
+        /// <returns>OpenAI tarafından oluşturulan egzersiz tavsiyesi metni</returns>
         public async Task<string> EgzersizTavsiyesiAl(int boy, int agirlik, string cinsiyet, string hedef)
         {
             try
             {
+                // İşlemi log'la - debug için yararlı
                 _logger.LogInformation($"Egzersiz tavsiyesi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}, Hedef={hedef}");
 
-                // OpenAI API'ını çağır
+                // OpenAI API'ını çağır - asenkron olarak
                 var tavsiye = await _openAiClient.GetFitnessTavsiesiAsync(boy, agirlik, cinsiyet, hedef);
 
+                // Başarılı işlemi log'la
                 _logger.LogInformation("Egzersiz tavsiyesi başarıyla oluşturuldu.");
                 return tavsiye;
             }
             catch (Exception ex)
             {
+                // API hatası - örnek veri döndür
                 _logger.LogError($"Egzersiz tavsiyesi oluşturma hatası: {ex.Message}");
-                // Hata durumunda dummy tavsiye döndür
+                // Hata durumunda dummy tavsiye döndür (alt düşey çökmesini engelle)
                 return oluşturDummyEgzersizTavsiyesi(boy, agirlik, cinsiyet, hedef);
             }
         }
 
         /// <summary>
         /// Diyet tavsiyesi oluşturur - OpenAI API'ı kullanarak
+        /// Boy, ağırlık, cinsiyet ve hedef bilgisine göre
+        /// Kişiye özel beslenme planı oluşturur
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti (Erkek/Kadın/Diğer)</param>
+        /// <param name="hedef">Fitness hedefi (Kilo verme, Kas kazanma vb.)</param>
+        /// <returns>OpenAI tarafından oluşturulan diyet tavsiyesi metni</returns>
         public async Task<string> DiyetTavsiyesiAl(int boy, int agirlik, string cinsiyet, string hedef)
         {
             try
             {
+                // İşlemi log'la - debug için yararlı
                 _logger.LogInformation($"Diyet tavsiyesi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}, Hedef={hedef}");
 
-                // OpenAI API'ını çağır
+                // OpenAI API'ını çağır - asenkron olarak
                 var tavsiye = await _openAiClient.GetDiyetTavsiesiAsync(boy, agirlik, cinsiyet, hedef);
 
+                // Başarılı işlemi log'la
                 _logger.LogInformation("Diyet tavsiyesi başarıyla oluşturuldu.");
                 return tavsiye;
             }
             catch (Exception ex)
             {
+                // API hatası - örnek veri döndür
                 _logger.LogError($"Diyet tavsiyesi oluşturma hatası: {ex.Message}");
-                // Hata durumunda dummy tavsiye döndür
+                // Hata durumunda dummy tavsiye döndür (alt düşey çökmesini engelle)
                 return oluşturDummyDiyetTavsiyesi(boy, agirlik, cinsiyet, hedef);
             }
         }
 
         /// <summary>
         /// Vücut tipi analizi yapar - OpenAI API'ı kullanarak
+        /// Boy, ağırlık ve cinsiyet bilgisine göre
+        /// BMI hesaplar ve vücut tipi analizi yapar
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti (Erkek/Kadın/Diğer)</param>
+        /// <returns>OpenAI tarafından oluşturulan vücut analizi metni</returns>
         public async Task<string> VucutTipiAnaliziYap(int boy, int agirlik, string cinsiyet)
         {
             try
             {
+                // İşlemi log'la - debug için yararlı
                 _logger.LogInformation($"Vücut tipi analizi talep edildi: Boy={boy}cm, Ağırlık={agirlik}kg, Cinsiyet={cinsiyet}");
 
-                // OpenAI API'ını çağır
+                // OpenAI API'ını çağır - asenkron olarak
                 var analiz = await _openAiClient.GetVucutTipiAnaliziAsync(boy, agirlik, cinsiyet);
 
+                // Başarılı işlemi log'la
                 _logger.LogInformation("Vücut tipi analizi başarıyla oluşturuldu.");
                 return analiz;
             }
             catch (Exception ex)
             {
+                // API hatası - örnek veri döndür
                 _logger.LogError($"Vücut tipi analizi hatası: {ex.Message}");
-                // Hata durumunda dummy analiz döndür
+                // Hata durumunda dummy analiz döndür (alt düşey çökmesini engelle)
                 return oluşturDummyVucutTipiAnalizi(boy, agirlik, cinsiyet);
             }
         }
@@ -103,15 +143,26 @@ namespace FitnessCenterManagement.Web.Services
         // ============================================
         // DUMMY (ÖRNEK) VERİ OLUŞTURMA METODLARI
         // ============================================
+        // Bu metodlar OpenAI API'si çöktüğünde 
+        // uygulamanın çökmesini engeller.
+        // Gerçek ortamda API kullanılır.
 
         /// <summary>
         /// Örnek egzersiz tavsiyesi oluşturur
-        /// Gerçek projede silinecek, OpenAI'dan cevap alınacak
+        /// 
+        /// Kullanım: OpenAI API çöküş durumunda
+        /// Bu dummy (örnek) veriler gösterilir
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti</param>
+        /// <param name="hedef">Fitness hedefi</param>
+        /// <returns>Önceden hazırlanmış örnek egzersiz planı</returns>
         private string oluşturDummyEgzersizTavsiyesi(int boy, int agirlik, string cinsiyet, string hedef)
         {
+            // Örnek antrenman planı - gerçek tavsiye yerine
             var tavsiye = $@"
-🏋️ EGZERSİZ TAVSIYE PLANI
+🏋️ EGZERSİZ TAVSIYE PLANI (Otomatik Hazırlanan Örnek)
 
 Kişisel Bilgiler:
 - Boy: {boy} cm
@@ -170,6 +221,8 @@ Başarı İçin İpuçları:
 ✅ Progresyon eklemeye devam et (agırlık, set, tekrar)
 ✅ Formu sahip çık - kalite miktardan önemliydi
 ✅ Tutarlı kal - en iyi plan, devamlı yapılanıdır
+
+NOT: Bu örnek bir plandır. Daha iyi sonuçlar için OpenAI API aktif olmalıdır.
 ";
 
             return tavsiye;
@@ -177,19 +230,29 @@ Başarı İçin İpuçları:
 
         /// <summary>
         /// Örnek diyet tavsiyesi oluşturur
-        /// Gerçek projede silinecek, OpenAI'dan cevap alınacak
+        /// 
+        /// Kullanım: OpenAI API çöküş durumunda
+        /// Bu dummy (örnek) veriler gösterilir
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti</param>
+        /// <param name="hedef">Fitness hedefi</param>
+        /// <returns>Önceden hazırlanmış örnek diyet planı</returns>
         private string oluşturDummyDiyetTavsiyesi(int boy, int agirlik, string cinsiyet, string hedef)
         {
             // BMR (Bazal Metabolizm Hızı) basit hesaplama
+            // Vücut hareketsiz durumda bile harcanan kalori
             double bmr = cinsiyet.ToLower() == "erkek" 
-                ? 88.362 + (13.397 * agirlik) + (4.799 * boy) - (5.677 * 25)  // 25 yaş varsayılan
-                : 447.593 + (9.247 * agirlik) + (3.098 * boy) - (4.330 * 25);
+                ? 88.362 + (13.397 * agirlik) + (4.799 * boy) - (5.677 * 25)  // Erkekler için formül (25 yaş varsayılan)
+                : 447.593 + (9.247 * agirlik) + (3.098 * boy) - (4.330 * 25); // Kadınlar için formül (25 yaş varsayılan)
 
-            double gunlukKalori = bmr * 1.55; // Orta aktivite seviyesi
+            // Günlük kalori ihtiyacı (orta aktivite seviyesi)
+            double gunlukKalori = bmr * 1.55;
 
+            // Örnek diyet planı
             var tavsiye = $@"
-🍽️ DİYET TAVSIYE PLANI
+🍽️ DİYET TAVSIYE PLANI (Otomatik Hazırlanan Örnek)
 
 Kişisel Bilgiler:
 - Boy: {boy} cm
@@ -267,6 +330,8 @@ BESLENME İPUÇLARİ:
 🎯 Her günü kaydını tut - ilerlemeni takip et
 🎯 Esneklik göster - sosyal durumlar da var
 🎯 Özel günlerde az miktar afet yiyeceğini tüket
+
+NOT: Bu örnek bir plandır. Daha iyi sonuçlar için OpenAI API aktif olmalıdır.
 ";
 
             return tavsiye;
@@ -274,14 +339,22 @@ BESLENME İPUÇLARİ:
 
         /// <summary>
         /// Örnek vücut tipi analizi oluşturur
-        /// Gerçek projede silinecek, OpenAI'dan cevap alınacak
+        /// 
+        /// Kullanım: OpenAI API çöküş durumunda
+        /// Bu dummy (örnek) veriler gösterilir
         /// </summary>
+        /// <param name="boy">Kullanıcının boyu (cm)</param>
+        /// <param name="agirlik">Kullanıcının ağırlığı (kg)</param>
+        /// <param name="cinsiyet">Kullanıcının cinsiyeti</param>
+        /// <returns>Önceden hazırlanmış örnek vücut analizi</returns>
         private string oluşturDummyVucutTipiAnalizi(int boy, int agirlik, string cinsiyet)
         {
             // BMI Hesaplama
+            // BMI = Ağırlık (kg) / Boy (m)²
             double boyMetre = boy / 100.0;
             double bmi = agirlik / (boyMetre * boyMetre);
 
+            // BMI kategorisini belirle
             string bmiKategorisi = bmi switch
             {
                 < 18.5 => "Zayıf",
@@ -292,6 +365,7 @@ BESLENME İPUÇLARİ:
             };
 
             // Vücut tipi tahmini (somatype)
+            // Boy ve ağırlık oranına göre tahmin
             string vucutTipi = (boy, agirlik) switch
             {
                 (> 180, < 75) => "Ektomorf (İnce, Uzun Yapı)",
@@ -300,8 +374,9 @@ BESLENME İPUÇLARİ:
                 _ => "Karma Vücut Tipi"
             };
 
+            // Örnek analiz raporu
             var analiz = $@"
-📊 VÜCUT TİPİ ANALİZİ RAPORU
+📊 VÜCUT TİPİ ANALİZİ RAPORU (Otomatik Hazırlanan Örnek)
 
 TEMEL KİŞİSEL VERİLER:
 - Boy: {boy} cm
@@ -358,8 +433,9 @@ BAŞARILILIK İÇİN STRATEJ:
 6️⃣ Motivasyonu koru - sosyal destek al
 7️⃣ Başarılarını kutla - ödüllendir
 
-NOT: Bu analiz genel bir rehberdir. Kişisel öneriler için 
-     profesyonel bir diyetisyen veya antrenöre danış.
+NOT: Bu analiz genel bir rehberdir. Bu örnek verilerdir.
+     Daha iyi sonuçlar için OpenAI API aktif olmalıdır.
+     Kişisel öneriler için profesyonel bir diyetisyen veya antrenöre danış.
 ";
 
             return analiz;

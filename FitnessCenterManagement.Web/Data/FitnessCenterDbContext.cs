@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FitnessCenterManagement.Web.Models;
 
 namespace FitnessCenterManagement.Web.Data
@@ -7,7 +9,7 @@ namespace FitnessCenterManagement.Web.Data
     /// FitnessCenterDbContext - Tüm veritabanı işlemlerini yönetmek için kullanılan DbContext sınıfı
     /// Entity Framework Core ile veritabanı tablolarına erişimi sağlar
     /// </summary>
-    public class FitnessCenterDbContext : DbContext
+    public class FitnessCenterDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         // Constructor
         /// <summary>

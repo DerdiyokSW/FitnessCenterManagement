@@ -1,0 +1,69 @@
+@using FitnessCenterManagement.Web.Controllers
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<!-- Kayıt formu - ekran merkezinde gösterilir -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Beyaz kart şeklinde form içeriği -->
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Sayfa başlığı -->
+                    <h2 class="card-title text-center mb-4">Yeni Hesap Oluştur</h2>
+
+                    <!-- Kayıt formu - POST metoduyla AccountController/Register adresine gönderilir -->
+                    <form method="post" asp-action="Register" asp-controller="Account">
+                        <!-- Tüm form hataları burada kırmızı uyarı olarak gösterilir -->
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                        <!-- E-posta alanı (kullanıcı adı olarak da kullanılır) -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">E-posta</label>
+                            <input asp-for="Email" class="form-control" placeholder="E-posta adresini gir" />
+                            <!-- E-posta alanının hataları göster -->
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Şifre alanı (En az 6 karakter olmalı) -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Şifre</label>
+                            <input asp-for="Password" class="form-control" placeholder="Şifre oluştur" />
+                            <!-- Şifre alanının hataları göster -->
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Şifre onayı alanı (Yukarıdaki şifre ile aynı olmalı) -->
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label">Şifreyi Onayla</label>
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Şifreyi tekrar gir" />
+                            <!-- Şifre onayı alanının hataları göster -->
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <!-- Kayıt ol düğmesi -->
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Kayıt Ol</button>
+                    </form>
+
+                    <!-- Divider çizgisi -->
+                    <hr />
+
+                    <!-- Giriş sayfasına yönlendirme linki -->
+                    <p class="text-center">
+                        Zaten hesabın var mı? <a asp-action="Login" asp-controller="Account">Giriş Yap</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form doğrulaması için jQuery ve başka script kütüphanelerini yükle -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

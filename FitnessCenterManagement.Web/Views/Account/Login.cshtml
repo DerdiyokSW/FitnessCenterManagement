@@ -1,0 +1,67 @@
+@using FitnessCenterManagement.Web.Controllers
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<!-- Giriş formu - ekran merkezinde gösterilir -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Beyaz kart şeklinde form içeriği -->
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Sayfa başlığı -->
+                    <h2 class="card-title text-center mb-4">Giriş Yap</h2>
+
+                    <!-- Giriş formu - POST metoduyla AccountController/Login adresine gönderilir -->
+                    <form method="post" asp-action="Login" asp-controller="Account">
+                        <!-- Tüm form hataları burada kırmızı uyarı olarak gösterilir -->
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                        <!-- E-posta alanı -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">E-posta</label>
+                            <input asp-for="Email" class="form-control" placeholder="E-posta adresini gir" />
+                            <!-- E-posta alanının hataları göster -->
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Şifre alanı -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Şifre</label>
+                            <input asp-for="Password" class="form-control" placeholder="Şifreni gir" />
+                            <!-- Şifre alanının hataları göster -->
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Beni Hatırla seçeneği (30 gün boyunca giriş yapmaya gerek yok) -->
+                        <div class="mb-3 form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label">Beni Hatırla</label>
+                        </div>
+
+                        <!-- Giriş yap düğmesi -->
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Giriş Yap</button>
+                    </form>
+
+                    <!-- Divider çizgisi -->
+                    <hr />
+
+                    <!-- Kayıt sayfasına yönlendirme linki -->
+                    <p class="text-center">
+                        Hesabın yok mu? <a asp-action="Register" asp-controller="Account">Kayıt Ol</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form doğrulaması için jQuery ve başka script kütüphanelerini yükle -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
