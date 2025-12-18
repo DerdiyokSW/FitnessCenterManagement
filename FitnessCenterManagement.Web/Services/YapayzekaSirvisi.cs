@@ -11,15 +11,21 @@ namespace FitnessCenterManagement.Web.Services
     /// <summary>
     /// YapayzekaSirvisi - Yapay zeka tarafından tavsiye oluşturan gerçek implementasyon
     /// 
-    /// OpenAI API'ı kullanarak:
+    /// OpenAI API'ı kullanarak (GPT-3.5-turbo):
     /// - Kişiye özel egzersiz programları oluşturur
     /// - Kişiye özel diyet planları oluşturur
     /// - Vücut tipi analizi ve BMI hesaplaması yapar
     /// 
     /// Özellikler:
-    /// - Hata yönetimi - API çöküş durumunda dummy data döndürür
-    /// - Logging - Her işlem ve hata kaydedilir
-    /// - Performans - Asenkron işlemler ile UI bloklanmaz
+    /// ✅ Gerçek OpenAI API istekleri - dummy data yok
+    /// ✅ Hata yönetimi - Detaylı exception handling ve loglama
+    /// ✅ Input doğrulama - Geçersiz parametreleri kontrol eder
+    /// ✅ Logging - Her işlem ve hata HttpRequestException dahil kaydedilir
+    /// ✅ Asenkron işlemler - UI bloklanmaz
+    /// 
+    /// Konfigürasyon:
+    /// - API Key: appsettings.json → AiSettings:ApiKey
+    /// - Model: gpt-3.5-turbo (ucuz ve hızlı)
     /// </summary>
     public class YapayzekaSirvisi : IYapayzekaSirvisi
     {
